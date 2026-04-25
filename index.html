@@ -8,933 +8,380 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg0: #FAF8F5;
-    --bg1: #FFFFFF;
-    --bg2: #F3EFF9;
-    --bg3: #EDE8F7;
-    --bg4: #E4DCF5;
-    --border: #E8E2F0;
-    --border-dark: #D4C9E8;
-    --accent: #7B4FA6;
-    --accent-light: #9B6DC4;
-    --accent-lo: rgba(123,79,166,0.08);
-    --accent-mid: rgba(123,79,166,0.22);
-    --accent-vivid: #C084E8;
-    --pink: #E8A0C8;
-    --pink-lo: rgba(232,160,200,0.15);
-    --rose: #D4547A;
-    --green: #4CAF82;
-    --green-lo: rgba(76,175,130,0.1);
-    --amber: #D4974A;
-    --text0: #1A1025;
-    --text1: #4A3D5C;
-    --text2: #9080A8;
-    --text3: #BBA8D0;
-    --sand: #F0EBE0;
-    --dark: #1A1025;
-    --hero-grad: linear-gradient(135deg, #F8F4FF 0%, #F0E8FF 40%, #FFE8F4 100%);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg0);
-    color: var(--text0);
-    font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden;
-    cursor: none;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
-  }
-  .cursor-ring {
-    width: 32px; height: 32px;
-    border: 1.5px solid rgba(123,79,166,0.4);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.08s ease, width 0.2s, height 0.2s, border-color 0.2s;
-  }
-  .cursor.hovered { width: 18px; height: 18px; }
-  .cursor-ring.hovered { width: 50px; height: 50px; border-color: var(--accent); }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 0 5vw;
-    height: 72px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(250,248,245,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none;
-  }
-
-  /* Logo mark — transparent bg, just the SVG */
-  .logo-mark {
-    width: 42px; height: 42px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .logo-mark svg { width: 42px; height: 42px; }
-
-  .logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--text0);
-    text-transform: uppercase;
-  }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 36px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--text1);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  .nav-cta {
-    background: var(--accent) !important;
-    color: white !important;
-    padding: 10px 24px;
-    border-radius: 100px;
-    font-weight: 500 !important;
-    transition: opacity 0.2s !important;
-  }
-  .nav-cta:hover { opacity: 0.85 !important; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    padding: 120px 5vw 80px;
-    position: relative;
-    overflow: hidden;
-    background: var(--hero-grad);
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -100px; right: -100px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(192,132,232,0.18) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: 20%;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(232,160,200,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-bg-text {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(120px, 18vw, 280px);
-    font-style: italic;
-    letter-spacing: -4px;
-    color: rgba(123,79,166,0.04);
-    white-space: nowrap;
-    user-select: none;
-    pointer-events: none;
-    line-height: 1;
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: white;
-    border: 1px solid var(--border-dark);
-    border-radius: 100px;
-    padding: 7px 16px;
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    width: fit-content;
-    animation: fadeUp 0.8s ease both;
-    box-shadow: 0 2px 12px rgba(123,79,166,0.1);
-  }
-
-  .hero-badge-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  .hero-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(58px, 8vw, 116px);
-    line-height: 1.02;
-    letter-spacing: -1px;
-    color: var(--text0);
-    animation: fadeUp 0.8s 0.1s ease both;
-    position: relative;
-  }
-
-  .hero-headline .accent-word {
-    color: var(--accent);
-    font-style: italic;
-    display: block;
-  }
-
-  .hero-headline .outline-word {
-    -webkit-text-stroke: 2px var(--accent);
-    color: transparent;
-  }
-
-  .hero-sub {
-    font-size: clamp(15px, 1.3vw, 17px);
-    color: var(--text1);
-    line-height: 1.75;
-    max-width: 500px;
-    margin: 28px 0 44px;
-    font-weight: 300;
-    animation: fadeUp 0.8s 0.2s ease both;
-  }
-
-  .hero-actions {
-    display: flex; align-items: center; gap: 16px;
-    animation: fadeUp 0.8s 0.3s ease both;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 100px;
-    padding: 16px 36px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: none;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 8px 30px rgba(123,79,166,0.35);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(123,79,166,0.45); }
-
-  .btn-outline {
-    background: white;
-    color: var(--accent);
-    border: 1.5px solid var(--border-dark);
-    border-radius: 100px;
-    padding: 16px 36px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: none;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 10px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .btn-outline:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(123,79,166,0.15); }
-
-  .hero-stats {
-    display: flex; align-items: center; gap: 48px;
-    margin-top: 64px;
-    padding-top: 44px;
-    border-top: 1px solid var(--border-dark);
-    animation: fadeUp 0.8s 0.4s ease both;
-  }
-
-  .stat-item { display: flex; flex-direction: column; gap: 4px; }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    color: var(--accent);
-    line-height: 1;
-    font-weight: 700;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--text2);
-    font-weight: 400;
-    letter-spacing: 0.3px;
-  }
-
-  .stat-divider {
-    width: 1px; height: 44px;
-    background: var(--border-dark);
-  }
-
-  /* Phone mockup */
-  .hero-float-card {
-    position: absolute;
-    right: 5vw; top: 50%;
-    transform: translateY(-42%);
-    width: clamp(260px, 26vw, 360px);
-    animation: fadeUp 0.8s 0.35s ease both;
-  }
-
-  .phone-frame {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 36px;
-    padding: 14px;
-    box-shadow: 0 60px 120px rgba(123,79,166,0.18), 0 0 0 1px rgba(123,79,166,0.06);
-  }
-
-  .phone-inner {
-    background: var(--bg2);
-    border-radius: 26px;
-    overflow: hidden;
-    min-height: 500px;
-  }
-
-  .phone-topbar {
-    background: white;
-    padding: 20px 16px 14px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .phone-greeting { font-size: 11px; color: var(--text2); }
-  .phone-name { font-size: 17px; font-weight: 700; color: var(--text0); margin-top: 2px; font-family: 'Playfair Display', serif; }
-
-  .phone-hero-card {
-    margin: 14px;
-    background: linear-gradient(135deg, var(--accent) 0%, #C084E8 100%);
-    border-radius: 14px;
-    padding: 18px;
-  }
-  .phone-hero-card-tag { font-size: 9px; color: rgba(255,255,255,0.7); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-  .phone-hero-card-title { font-size: 14px; font-weight: 700; color: white; margin: 6px 0; line-height: 1.3; font-family: 'Playfair Display', serif; font-style: italic; }
-  .phone-hero-card-btn { display: inline-block; background: white; color: var(--accent); font-size: 10px; font-weight: 700; padding: 6px 14px; border-radius: 100px; margin-top: 10px; }
-
-  .phone-section-label { font-size: 11px; font-weight: 700; color: var(--text0); padding: 0 14px 8px; margin-top: 10px; }
-
-  .phone-cats {
-    display: flex; gap: 8px;
-    padding: 0 14px;
-    overflow: hidden;
-  }
-
-  .phone-cat {
-    flex-shrink: 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 12px;
-    font-size: 10px;
-    color: var(--text1);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  .phone-provider {
-    margin: 10px 14px 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex; align-items: center; gap: 10px;
-  }
-
-  .phone-provider-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .phone-provider-name { font-size: 12px; font-weight: 700; color: var(--text0); }
-  .phone-provider-meta { font-size: 10px; color: var(--text2); margin-top: 2px; }
-  .phone-provider-rating { margin-left: auto; font-size: 11px; color: var(--amber); font-weight: 700; }
-
-  /* TICKER */
-  .ticker-wrap {
-    background: var(--accent);
-    padding: 16px 0;
-    overflow: hidden;
-  }
-
-  .ticker-track {
-    display: flex; gap: 48px;
-    animation: ticker 30s linear infinite;
-    white-space: nowrap;
-  }
-
-  .ticker-item {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.85);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
-  }
-
-  .ticker-dot { color: rgba(255,255,255,0.5); font-size: 16px; }
-
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* SECTIONS */
-  .section {
-    padding: 120px 5vw;
-    position: relative;
-  }
-
-  .section-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .section-tag::before {
-    content: '';
-    width: 24px; height: 1.5px;
-    background: var(--accent);
-  }
-
-  .section-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(44px, 5.5vw, 78px);
-    line-height: 1.05;
-    color: var(--text0);
-    letter-spacing: -0.5px;
-  }
-
-  .section-headline em { font-style: italic; color: var(--accent); }
-
-  .section-body {
-    font-size: 16px;
-    color: var(--text1);
-    line-height: 1.75;
-    max-width: 460px;
-    font-weight: 300;
-    margin-top: 20px;
-  }
-
-  /* HOW IT WORKS */
-  .how-section { background: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-
-  .how-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 64px;
-  }
-
-  .how-cell {
-    background: var(--bg0);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 40px 32px;
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.3s;
-  }
-  .how-cell:hover { box-shadow: 0 20px 60px rgba(123,79,166,0.12); transform: translateY(-4px); }
-
-  .how-step-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 72px;
-    color: rgba(123,79,166,0.07);
-    line-height: 1;
-    position: absolute;
-    top: 16px; right: 20px;
-    font-style: italic;
-  }
-
-  .how-icon {
-    width: 52px; height: 52px;
-    background: var(--accent-lo);
-    border: 1px solid var(--accent-mid);
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    margin-bottom: 24px;
-  }
-
-  .how-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text0);
-    margin-bottom: 12px;
-  }
-
-  .how-desc {
-    font-size: 14px;
-    color: var(--text1);
-    line-height: 1.7;
-    font-weight: 300;
-  }
-
-  /* SERVICES */
-  .services-section {
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
-    margin-top: 56px;
-  }
-
-  .service-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 24px 16px;
-    text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    cursor: none;
-  }
-  .service-card:hover { transform: translateY(-5px); border-color: var(--accent-light); box-shadow: 0 12px 40px rgba(123,79,166,0.12); }
-
-  .service-icon-wrap {
-    width: 50px; height: 50px;
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    margin: 0 auto 12px;
-  }
-
-  .service-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text0);
-    line-height: 1.3;
-  }
-
-  /* TRUST */
-  .trust-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-  }
-
-  .trust-feature-list {
-    display: flex; flex-direction: column; gap: 16px;
-    margin-top: 40px;
-  }
-
-  .trust-feature {
-    display: flex; gap: 16px; align-items: flex-start;
-    padding: 20px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .trust-feature:hover { border-color: var(--accent-mid); box-shadow: 0 8px 30px rgba(123,79,166,0.08); }
-
-  .trust-icon {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .trust-feature-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text0);
-    margin-bottom: 4px;
-  }
-
-  .trust-feature-desc {
-    font-size: 13px;
-    color: var(--text1);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* ESCROW */
-  .escrow-visual {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 36px;
-    box-shadow: 0 20px 60px rgba(123,79,166,0.08);
-  }
-
-  .escrow-step {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .escrow-step:last-child { border-bottom: none; }
-
-  .escrow-step-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .escrow-step-text { font-size: 14px; color: var(--text0); font-weight: 500; }
-  .escrow-step-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-
-  /* PROVIDERS CTA */
-  .providers-cta {
-    background: var(--bg3);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .providers-cta-inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .cta-half {
-    padding: 72px 48px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.3s;
-  }
-  .cta-half:hover { box-shadow: 0 20px 60px rgba(123,79,166,0.1); }
-
-  .cta-half-tag {
-    font-size: 11px;
-    letter-spacing: 2px;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .cta-half-tag::before { content: ''; width: 20px; height: 1.5px; }
-
-  .cta-half-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: 44px;
-    line-height: 1.08;
-    color: var(--text0);
-    margin-bottom: 16px;
-    letter-spacing: -0.3px;
-  }
-  .cta-half-headline em { font-style: italic; }
-
-  .cta-half-desc {
-    font-size: 14px;
-    color: var(--text1);
-    line-height: 1.7;
-    max-width: 360px;
-    margin-bottom: 32px;
-    font-weight: 300;
-  }
-
-  .cta-half-bg-num {
-    position: absolute;
-    bottom: -10px; right: 24px;
-    font-family: 'Playfair Display', serif;
-    font-size: 130px;
-    color: rgba(123,79,166,0.04);
-    user-select: none;
-    line-height: 1;
-    font-style: italic;
-  }
-
-  /* TESTIMONIALS */
-  .testimonials-section { background: var(--bg0); }
-
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 56px;
-  }
-
-  .testimonial-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 30px 26px;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-  .testimonial-card:hover { box-shadow: 0 16px 50px rgba(123,79,166,0.1); transform: translateY(-3px); }
-
-  .testimonial-stars { display: flex; gap: 3px; margin-bottom: 18px; }
-  .star { color: var(--amber); font-size: 13px; }
-
-  .testimonial-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px;
-    color: var(--text1);
-    line-height: 1.7;
-    margin-bottom: 22px;
-    font-style: italic;
-  }
-
-  .testimonial-author { display: flex; align-items: center; gap: 10px; }
-
-  .author-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .author-name { font-size: 13px; font-weight: 600; color: var(--text0); }
-  .author-meta { font-size: 11px; color: var(--text2); margin-top: 1px; }
-
-  /* CITY STRIP */
-  .city-strip {
-    padding: 22px 0;
-    background: var(--dark);
-    overflow: hidden;
-  }
-  .city-strip-track {
-    display: flex; gap: 0;
-    animation: ticker 20s linear infinite;
-    white-space: nowrap;
-  }
-  .city-strip-item {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    letter-spacing: 4px;
-    color: rgba(255,255,255,0.85);
-    padding: 0 36px;
-    flex-shrink: 0;
-    font-style: italic;
-  }
-  .city-strip-sep {
-    font-size: 24px;
-    color: var(--accent-vivid);
-    flex-shrink: 0;
-    align-self: center;
-  }
-
-  /* DOWNLOAD */
-  .download-section {
-    background: var(--bg2);
-    padding: 100px 5vw;
-    position: relative;
-    overflow: hidden;
-    border-top: 1px solid var(--border);
-  }
-
-  .download-section::before {
-    content: '';
-    position: absolute;
-    top: -120px; right: -120px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(192,132,232,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .download-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    position: relative;
-    gap: 60px;
-  }
-
-  .download-headline {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(46px, 5.5vw, 72px);
-    color: var(--text0);
-    line-height: 1.05;
-    letter-spacing: -0.5px;
-    margin-bottom: 20px;
-  }
-  .download-headline em { font-style: italic; color: var(--accent); }
-
-  .download-sub {
-    font-size: 16px;
-    color: var(--text1);
-    line-height: 1.7;
-    max-width: 400px;
-    margin-bottom: 36px;
-    font-weight: 300;
-  }
-
-  .download-btns { display: flex; gap: 14px; }
-
-  .app-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--dark);
-    color: white;
-    border-radius: 12px;
-    padding: 12px 22px;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    min-width: 148px;
-    box-shadow: 0 4px 16px rgba(26,16,37,0.2);
-  }
-  .app-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,16,37,0.3); }
-  .app-btn-label { font-size: 9px; color: rgba(255,255,255,0.6); line-height: 1; margin-bottom: 2px; letter-spacing: 0.5px; }
-  .app-btn-store { font-size: 14px; font-weight: 600; color: white; line-height: 1; }
-
-  .download-phones {
-    display: flex; gap: 16px; align-items: flex-end;
-    flex-shrink: 0;
-  }
-
-  .mini-phone {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    width: 140px;
-    padding: 12px;
-    box-shadow: 0 20px 60px rgba(123,79,166,0.12);
-  }
-  .mini-phone-inner {
-    background: var(--bg3);
-    border-radius: 16px;
-    height: 200px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 8px;
-  }
-  .mini-phone.tall .mini-phone-inner { height: 260px; }
-  .mini-phone-icon { font-size: 30px; }
-  .mini-phone-text { font-size: 11px; color: var(--text1); text-align: center; line-height: 1.4; }
-
-  /* FOOTER */
-  footer {
-    background: var(--dark);
-    padding: 64px 5vw 32px;
-  }
-
-  .footer-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 48px;
-    padding-bottom: 48px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .footer-brand-text {
-    font-size: 13px;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.7;
-    margin-top: 16px;
-    max-width: 280px;
-    font-weight: 300;
-  }
-
-  .footer-col-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
-  .footer-links a:hover { color: rgba(255,255,255,0.8); }
-
-  .footer-bottom {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 32px;
-  }
-
-  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
-
-  .footer-badge {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 11px; color: var(--green);
-    background: rgba(76,175,130,0.1);
-    padding: 6px 14px; border-radius: 100px;
-    border: 1px solid rgba(76,175,130,0.2);
-  }
-
-  .footer-badge-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s ease infinite;
-  }
-
-  /* Footer logo */
-  .footer-logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: white;
-    text-transform: uppercase;
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  @media (max-width: 900px) {
-    .hero-float-card { display: none; }
-    .how-grid { grid-template-columns: 1fr; }
-    .services-grid { grid-template-columns: repeat(3, 1fr); }
-    .trust-grid { grid-template-columns: 1fr; }
-    .providers-cta-inner { grid-template-columns: 1fr; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .download-inner { flex-direction: column; gap: 48px; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
-    .hero-stats { flex-wrap: wrap; gap: 24px; }
-  }
+:root {
+  --bg0:#FAF8F5; --bg1:#FFFFFF; --bg2:#F3EFF9; --bg3:#EDE8F7; --bg4:#E4DCF5;
+  --border:#E8E2F0; --border-dark:#D4C9E8;
+  --accent:#7B4FA6; --accent-light:#9B6DC4; --accent-lo:rgba(123,79,166,.08); --accent-mid:rgba(123,79,166,.22);
+  --accent-vivid:#C084E8; --pink:#E8A0C8; --pink-lo:rgba(232,160,200,.15);
+  --rose:#D4547A; --green:#4CAF82; --green-lo:rgba(76,175,130,.1); --amber:#D4974A;
+  --text0:#1A1025; --text1:#4A3D5C; --text2:#9080A8; --text3:#BBA8D0;
+  --dark:#1A1025;
+  --hero-grad:linear-gradient(135deg,#F8F4FF 0%,#F0E8FF 40%,#FFE8F4 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg0);color:var(--text0);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+.cursor{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .15s ease,width .2s,height .2s}
+.cursor-ring{width:32px;height:32px;border:1.5px solid rgba(123,79,166,.4);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .08s ease,width .2s,height .2s,border-color .2s}
+.cursor.hovered{width:18px;height:18px}
+.cursor-ring.hovered{width:50px;height:50px;border-color:var(--accent)}
+
+/* LOGO */
+.logo-mark { width:42px; height:42px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.logo-mark svg { width:42px; height:42px; }
+.logo-text { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; letter-spacing:3px; color:var(--text0); text-transform:uppercase; }
+.footer-logo-text { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; letter-spacing:3px; color:white; text-transform:uppercase; }
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5vw;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,248,245,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+nav.scrolled{background:rgba(250,248,245,.98);box-shadow:0 1px 20px rgba(123,79,166,.08)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:34px;object-fit:contain}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+.nav-links a{color:var(--text1);text-decoration:none;font-size:14px;font-weight:400;transition:color .2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{background:var(--accent)!important;color:white!important;padding:10px 24px;border-radius:100px;font-weight:500!important;transition:opacity .2s!important}
+.nav-cta:hover{opacity:.85!important}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;background:var(--hero-grad)}
+
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:120px 5vw 80px;position:relative;z-index:1}
+.hero-bg-text{position:absolute;top:50%;left:-2vw;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:clamp(180px,26vw,380px);font-style:italic;letter-spacing:-8px;color:rgba(123,79,166,.045);white-space:nowrap;user-select:none;pointer-events:none;line-height:1;z-index:0}
+
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--border-dark);border-radius:100px;padding:7px 16px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px;width:fit-content;box-shadow:0 2px 12px rgba(123,79,166,.1);animation:fadeUp .8s ease both}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(52px,6.5vw,96px);line-height:1.02;letter-spacing:-.5px;color:var(--text0);animation:fadeUp .8s .1s ease both}
+.hero h1 .accent-word{color:var(--accent);font-style:italic;display:block}
+.hero h1 .outline-word{-webkit-text-stroke:2px var(--accent);color:transparent;display:block}
+
+.hero-sub{font-size:clamp(14px,1.2vw,17px);color:var(--text1);line-height:1.75;max-width:480px;margin:24px 0 36px;font-weight:300;animation:fadeUp .8s .2s ease both}
+
+/* Search bar — hero */
+.hero-search{display:flex;background:white;border:1.5px solid var(--border-dark);border-radius:100px;overflow:hidden;margin-bottom:32px;animation:fadeUp .8s .25s ease both;box-shadow:0 4px 20px rgba(123,79,166,.1);position:relative}
+.hero-search:focus-within{border-color:var(--accent);box-shadow:0 4px 24px rgba(123,79,166,.18)}
+.hs-input{flex:1;background:transparent;border:none;outline:none;padding:14px 20px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text0)}
+.hs-input::placeholder{color:var(--text2)}
+.hs-divider{width:1px;background:var(--border);margin:10px 0}
+.hs-loc{background:transparent;border:none;outline:none;padding:14px 16px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text1);cursor:pointer;min-width:130px}
+.hs-loc option{background:white;color:var(--text0)}
+.hs-btn{background:var(--accent);border:none;color:white;padding:10px 22px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:none;display:flex;align-items:center;gap:7px;border-radius:100px;margin:5px;transition:background .2s}
+.hs-btn:hover{background:var(--accent-light)}
+.search-drop{position:absolute;top:calc(100% + 8px);left:0;right:0;background:white;border:1px solid var(--border-dark);border-radius:20px;overflow:hidden;z-index:50;box-shadow:0 16px 48px rgba(123,79,166,.15);display:none}
+.search-drop.open{display:block}
+.sd-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;transition:background .15s;text-decoration:none;color:var(--text0)}
+.sd-item:hover{background:var(--bg2)}
+.sd-av{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;flex-shrink:0}
+.sd-name{font-size:14px;font-weight:600;color:var(--text0)}
+.sd-sub{font-size:11px;color:var(--text2);margin-top:1px}
+.sd-price{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--accent);margin-left:auto}
+.sd-sep{height:1px;background:var(--border);margin:0 20px}
+.sd-foot{padding:10px 20px;font-size:12px;color:var(--text2);text-align:center}
+.sd-foot a{color:var(--accent);text-decoration:none}
+
+.hero-actions{display:flex;align-items:center;gap:16px;animation:fadeUp .8s .3s ease both;margin-bottom:44px}
+.btn-primary{background:var(--accent);color:white;border:none;border-radius:100px;padding:16px 36px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:none;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 30px rgba(123,79,166,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(123,79,166,.45)}
+.btn-outline{background:white;color:var(--accent);border:1.5px solid var(--border-dark);border-radius:100px;padding:16px 36px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:none;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:border-color .2s,box-shadow .2s}
+.btn-outline:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(123,79,166,.15)}
+
+/* neighbourhood pills */
+.area-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;animation:fadeUp .8s .15s ease both}
+.area-pill{padding:5px 14px;border-radius:100px;border:1px solid var(--border-dark);font-size:12px;color:var(--text2);cursor:default;transition:all .2s}
+.area-pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-lo)}
+
+.hero-stats{display:flex;align-items:center;gap:36px;padding-top:36px;border-top:1px solid var(--border-dark);animation:fadeUp .8s .4s ease both}
+.stat-item{display:flex;flex-direction:column;gap:4px}
+.stat-num{font-family:'Playfair Display',serif;font-size:36px;color:var(--accent);line-height:1;font-weight:700}
+.stat-label{font-size:11px;color:var(--text2);font-weight:400;letter-spacing:.3px}
+.stat-divider{width:1px;height:40px;background:var(--border-dark)}
+
+/* HERO RIGHT — animated phone */
+.hero-right{position:relative;overflow:visible;display:flex;align-items:center;justify-content:center;padding:40px 0}
+
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* TICKER */
+.ticker-wrap{background:var(--accent);padding:16px 0;overflow:hidden}
+.ticker-track{display:flex;gap:48px;animation:ticker 30s linear infinite;white-space:nowrap}
+.ticker-item{display:flex;align-items:center;gap:12px;font-size:12px;color:rgba(255,255,255,.85);font-weight:500;letter-spacing:.5px;flex-shrink:0}
+.ticker-dot{color:rgba(255,255,255,.5);font-size:16px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* PHOTO GALLERY STRIP */
+.gallery-section{padding:80px 5vw;background:white;border-top:1px solid var(--border)}
+.gallery-label{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.gallery-label::before{content:'';width:24px;height:1.5px;background:var(--accent)}
+.gallery-h{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);color:var(--text0);line-height:1.08;letter-spacing:-.3px;margin-bottom:40px}
+.gallery-h em{font-style:italic;color:var(--accent)}
+.gallery-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:280px 280px;gap:12px}
+.g-cell{border-radius:18px;overflow:hidden;position:relative;cursor:none}
+.g-cell img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.g-cell:hover img{transform:scale(1.04)}
+.g-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,16,37,.75) 0%,transparent 55%);opacity:0;transition:opacity .3s}
+.g-cell:hover .g-overlay{opacity:1}
+.g-label{position:absolute;bottom:18px;left:18px;font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:white;font-style:italic;opacity:0;transform:translateY(6px);transition:all .3s}
+.g-cell:hover .g-label{opacity:1;transform:translateY(0)}
+.g-pill{position:absolute;top:14px;right:14px;background:white;border-radius:100px;padding:4px 12px;font-size:10px;font-weight:700;color:var(--accent);opacity:0;transition:opacity .3s}
+.g-cell:hover .g-pill{opacity:1}
+.g-tall{grid-row:span 2}
+
+/* HOW IT WORKS */
+.section{padding:100px 5vw;position:relative}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.section-tag::before{content:'';width:24px;height:1.5px;background:var(--accent)}
+.section-headline{font-family:'Playfair Display',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;color:var(--text0);letter-spacing:-.3px}
+.section-headline em{font-style:italic;color:var(--accent)}
+.how-section{background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.how-cell{background:var(--bg0);border:1px solid var(--border);border-radius:20px;padding:0;overflow:hidden;transition:box-shadow .3s,transform .3s;position:relative}
+.how-cell:hover{box-shadow:0 20px 60px rgba(123,79,166,.12);transform:translateY(-4px)}
+.how-cell-photo{width:100%;height:200px;object-fit:cover;display:block}
+.how-cell-body{padding:28px 28px 32px}
+.how-step-num{font-family:'Playfair Display',serif;font-size:64px;color:rgba(123,79,166,.07);line-height:1;position:absolute;top:12px;right:18px;font-style:italic}
+.how-icon{width:48px;height:48px;background:var(--accent-lo);border:1px solid var(--accent-mid);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px}
+.how-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--text0);margin-bottom:10px}
+.how-desc{font-size:13px;color:var(--text1);line-height:1.7;font-weight:300}
+
+/* SERVICES */
+.services-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.services-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:52px}
+.service-card{background:white;border:1px solid var(--border);border-radius:18px;padding:0;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s;cursor:none;text-decoration:none;display:block}
+.service-card:hover{transform:translateY(-5px);border-color:var(--accent-light);box-shadow:0 12px 40px rgba(123,79,166,.12)}
+.service-photo{width:100%;height:130px;object-fit:cover;display:block}
+.service-info{padding:14px 14px 16px}
+.service-icon-wrap{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px}
+.service-name{font-size:12px;font-weight:600;color:var(--text0);line-height:1.3}
+.service-count{font-size:10px;color:var(--text2);margin-top:3px}
+
+/* TRUST */
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.trust-feature-list{display:flex;flex-direction:column;gap:14px;margin-top:36px}
+.trust-feature{display:flex;gap:14px;align-items:flex-start;padding:18px;background:white;border:1px solid var(--border);border-radius:16px;transition:border-color .2s,box-shadow .2s}
+.trust-feature:hover{border-color:var(--accent-mid);box-shadow:0 8px 30px rgba(123,79,166,.08)}
+.trust-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.trust-feature-title{font-size:14px;font-weight:600;color:var(--text0);margin-bottom:4px}
+.trust-feature-desc{font-size:12px;color:var(--text1);line-height:1.6;font-weight:300}
+
+/* trust right — photo + escrow */
+.trust-photo-wrap{border-radius:20px;overflow:hidden;margin-bottom:20px;position:relative;height:260px}
+.trust-photo-wrap img{width:100%;height:100%;object-fit:cover}
+.trust-photo-badge{position:absolute;bottom:18px;left:18px;right:18px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.tp-badge-icon{width:32px;height:32px;border-radius:8px;background:var(--green-lo);border:1px solid rgba(76,175,130,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.tp-badge-text .top{font-size:12px;font-weight:700;color:var(--text0)}
+.tp-badge-text .bot{font-size:10px;color:var(--text2);margin-top:1px}
+
+.escrow-visual{background:white;border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 8px 40px rgba(123,79,166,.07)}
+.escrow-step{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border)}
+.escrow-step:last-child{border-bottom:none}
+.escrow-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.escrow-step-text{font-size:13px;color:var(--text0);font-weight:500}
+.escrow-step-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.escrow-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.escrow-stat{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px}
+.escrow-stat-num{font-size:28px;font-weight:700;font-family:'Playfair Display',serif}
+.escrow-stat-label{font-size:11px;color:var(--text1);margin-top:5px}
+
+/* FOR CLIENTS / FOR PROVIDERS */
+.providers-cta{background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 5vw}
+.providers-cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cta-half{background:white;border:1px solid var(--border);border-radius:24px;overflow:hidden;transition:box-shadow .3s}
+.cta-half:hover{box-shadow:0 20px 60px rgba(123,79,166,.1)}
+.cta-half-photo{width:100%;height:320px;object-fit:cover;display:block;object-position:top}
+.cta-half-body{padding:40px 40px 44px;position:relative}
+.cta-half-bg-num{position:absolute;bottom:-10px;right:24px;font-family:'Playfair Display',serif;font-size:120px;color:rgba(123,79,166,.04);user-select:none;line-height:1;font-style:italic}
+.cta-half-tag{font-size:11px;letter-spacing:2px;font-weight:600;text-transform:uppercase;margin-bottom:14px;display:inline-flex;align-items:center;gap:8px}
+.cta-half-tag::before{content:'';width:20px;height:1.5px}
+.cta-half-headline{font-family:'Playfair Display',serif;font-size:clamp(32px,3.2vw,42px);line-height:1.08;color:var(--text0);margin-bottom:14px;letter-spacing:-.3px}
+.cta-half-headline em{font-style:italic}
+.cta-half-desc{font-size:13px;color:var(--text1);line-height:1.7;max-width:380px;margin-bottom:28px;font-weight:300}
+.feat-list{display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.feat-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text1);line-height:1.5}
+.fcheck{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* TESTIMONIALS */
+.testimonials-section{background:var(--bg0)}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.testimonial-card{background:white;border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.testimonial-card:hover{box-shadow:0 16px 50px rgba(123,79,166,.1);transform:translateY(-3px)}
+.t-card-photo{width:100%;height:180px;object-fit:cover;object-position:top}
+.t-card-body{padding:24px}
+.testimonial-stars{display:flex;gap:3px;margin-bottom:14px}
+.star{color:var(--amber);font-size:13px}
+.testimonial-text{font-family:'Playfair Display',serif;font-size:14px;color:var(--text1);line-height:1.7;margin-bottom:18px;font-style:italic}
+.testimonial-author{display:flex;align-items:center;gap:10px}
+.author-avatar img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+.author-name{font-size:13px;font-weight:600;color:var(--text0)}
+.author-meta{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* CITY STRIP */
+.city-strip{padding:22px 0;background:var(--dark);overflow:hidden}
+.city-strip-track{display:flex;gap:0;animation:ticker 20s linear infinite;white-space:nowrap}
+.city-strip-item{font-family:'Playfair Display',serif;font-size:28px;letter-spacing:4px;color:rgba(255,255,255,.85);padding:0 36px;flex-shrink:0;font-style:italic}
+.city-strip-sep{font-size:24px;color:var(--accent-vivid);flex-shrink:0;align-self:center}
+
+/* DOWNLOAD */
+.download-section{background:var(--bg2);border-top:1px solid var(--border);overflow:hidden;position:relative}
+.download-section::before{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;background:radial-gradient(circle,rgba(192,132,232,.14) 0%,transparent 70%);pointer-events:none}
+.download-inner{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:600px}
+.download-left{padding:80px 5vw 80px}
+.download-tag{font-size:11px;color:var(--text2);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.download-tag::before{content:'';width:20px;height:1.5px;background:var(--accent);display:inline-block}
+.download-headline{font-family:'Playfair Display',serif;font-size:clamp(42px,5vw,68px);color:var(--text0);line-height:1.05;letter-spacing:-.3px;margin-bottom:18px}
+.download-headline em{font-style:italic;color:var(--accent)}
+.download-sub{font-size:15px;color:var(--text1);line-height:1.7;max-width:400px;margin-bottom:32px;font-weight:300}
+.download-btns{display:flex;gap:14px;flex-wrap:wrap}
+.app-btn{display:inline-flex;align-items:center;gap:10px;background:var(--dark);color:white;border-radius:12px;padding:12px 22px;text-decoration:none;transition:transform .2s,box-shadow .2s;min-width:148px;box-shadow:0 4px 16px rgba(26,16,37,.2)}
+.app-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(26,16,37,.3)}
+.app-btn-label{font-size:9px;color:rgba(255,255,255,.6);line-height:1;margin-bottom:2px;letter-spacing:.5px}
+.app-btn-store{font-size:14px;font-weight:600;color:white;line-height:1}
+.download-right{position:relative;height:100%;min-height:600px;overflow:hidden}
+.download-right img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.download-right-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--bg2) 0%,transparent 30%)}
+.download-badge{position:absolute;top:50px;right:40px;background:white;border:1px solid var(--border);border-radius:18px;padding:16px 20px;box-shadow:0 12px 40px rgba(123,79,166,.15);animation:floatY 4s ease-in-out infinite}
+.db-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--text0);margin-bottom:8px;font-style:italic}
+.db-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.db-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.db-text{font-size:12px;color:var(--text1)}
+
+/* FOOTER */
+footer{background:var(--dark);padding:64px 5vw 32px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand img{height:36px;object-fit:contain;margin-bottom:14px;display:block}
+.footer-brand-text{font-size:13px;color:rgba(255,255,255,.4);line-height:1.7;max-width:260px;margin-bottom:18px;font-weight:300}
+.footer-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--green);background:rgba(76,175,130,.1);padding:6px 14px;border-radius:100px;border:1px solid rgba(76,175,130,.2)}
+.footer-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+.footer-col-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,.75)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.22)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:110px 5vw 70px}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:220px 220px}
+  .g-tall{grid-row:span 1}
+  .how-grid{grid-template-columns:1fr 1fr}
+  .services-grid{grid-template-columns:repeat(3,1fr)}
+  .trust-grid{grid-template-columns:1fr}
+  .providers-cta-inner{grid-template-columns:1fr}
+  .testimonials-grid{grid-template-columns:1fr}
+  .download-inner{grid-template-columns:1fr}
+  .download-right{display:none}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+  .nav-links{display:none}
+  .hero-stats{flex-wrap:wrap;gap:20px}
+  .hs-loc{display:none}
+  .hs-divider{display:none}
+}
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:1fr}
+  .how-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr}
+  .hero h1{font-size:46px}
+}
+
+/* REVIEW TICKER CARDS */
+.rev-card-flat{flex-shrink:0;width:340px;background:white;border:1px solid var(--border);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.rev-stars{color:var(--amber);font-size:14px;letter-spacing:2px}
+.rev-text{font-family:'Playfair Display',serif;font-size:13px;color:var(--text1);line-height:1.7;font-style:italic;flex:1}
+.rev-author{display:flex;align-items:center;gap:10px;margin-top:4px}
+.rev-init{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.rev-name{font-size:13px;font-weight:600;color:var(--text0)}
+.rev-role{font-size:11px;color:var(--text2);margin-top:1px}
+@keyframes reviewScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes reviewScrollR{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+
+/* ── ANIMATED PHONE ───────────────────────────────────────────────── */
+.hero-right { background: transparent !important; }
+.hero-right img { display: none; }
+.hero-right-overlay { display: none; }
+
+.anim-phone-wrap { position:relative; width:280px; height:580px; flex-shrink:0; }
+.anim-phone-glow { position:absolute; inset:-40px; background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(123,79,166,.18) 0%,transparent 70%); pointer-events:none; animation:glowPulse 4s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100%{opacity:.7}50%{opacity:1} }
+.anim-phone-frame { width:280px; height:580px; background:white; border:1.5px solid rgba(123,79,166,.25); border-radius:44px; overflow:hidden; position:relative; box-shadow:0 40px 100px rgba(123,79,166,.22),0 0 0 1px rgba(123,79,166,.08),inset 0 1px 0 rgba(255,255,255,.8); }
+.anim-phone-frame::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:90px; height:24px; background:#1A1025; border-radius:0 0 16px 16px; z-index:50; }
+.anim-screens { position:absolute; inset:0; overflow:hidden; }
+.anim-screen { position:absolute; inset:0; display:flex; flex-direction:column; opacity:0; transform:translateY(30px); }
+.sc1 { animation:screenShow 9s 0s infinite; }
+.sc2 { animation:screenShow 9s 3s infinite; }
+.sc3 { animation:screenShow 9s 6s infinite; }
+@keyframes screenShow { 0%{opacity:0;transform:translateY(24px)} 5%{opacity:1;transform:translateY(0)} 28%{opacity:1;transform:translateY(0)} 33%{opacity:0;transform:translateY(-20px)} 100%{opacity:0;transform:translateY(24px)} }
+
+/* SPLASH */
+.sc1 { background:linear-gradient(160deg,#F8F4FF 0%,#EDE8F7 50%,#F3EFF9 100%); align-items:center; justify-content:center; gap:20px; }
+.splash-logo-wrap { width:80px; height:80px; border-radius:22px; background:#7B4FA6; display:flex; align-items:center; justify-content:center; box-shadow:0 12px 40px rgba(123,79,166,.4); animation:splashLogo 9s 0s infinite; }
+@keyframes splashLogo { 0%{transform:scale(.6) rotate(-8deg);opacity:0} 8%{transform:scale(1.05) rotate(1deg);opacity:1} 12%{transform:scale(1) rotate(0deg)} 28%{transform:scale(1);opacity:1} 33%{opacity:0} 100%{opacity:0;transform:scale(.6)} }
+.splash-s { font-family:Georgia,serif; font-size:40px; font-weight:900; color:white; letter-spacing:-1px; }
+.splash-wordmark { font-family:Georgia,serif; font-size:28px; font-weight:700; letter-spacing:6px; color:#1A1025; text-transform:uppercase; }
+.splash-tagline { font-size:11px; color:#9080A8; letter-spacing:.3px; text-align:center; padding:0 30px; line-height:1.6; }
+.splash-dots { display:flex; gap:6px; }
+.splash-dot { width:6px; height:6px; border-radius:50%; background:#D4C9E8; }
+.splash-dot.active { width:20px; border-radius:3px; background:#7B4FA6; animation:dotPulse 9s 0s infinite; }
+@keyframes dotPulse { 0%{width:20px;background:#7B4FA6} 30%{width:20px;background:#7B4FA6} 33%{width:6px;background:#D4C9E8} 100%{width:6px;background:#D4C9E8} }
+
+/* DASHBOARD */
+.sc2 { background:#FAF8F5; }
+.dash-topbar { background:white; padding:36px 16px 14px; border-bottom:1px solid #F0EBF8; display:flex; justify-content:space-between; align-items:center; flex-shrink:0; }
+.dash-greeting { font-size:11px; color:#9080A8; }
+.dash-name { font-family:Georgia,serif; font-size:18px; font-weight:700; color:#1A1025; margin-top:2px; }
+.dash-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#7B4FA6,#C084E8); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; }
+.dash-hero-card { margin:12px; background:linear-gradient(135deg,#7B4FA6 0%,#C084E8 100%); border-radius:16px; padding:16px; flex-shrink:0; }
+.dhc-tag { font-size:8px; font-weight:700; color:rgba(255,255,255,.7); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
+.dhc-title { font-family:Georgia,serif; font-size:15px; font-weight:700; color:white; font-style:italic; line-height:1.3; margin-bottom:10px; }
+.dhc-btn { display:inline-block; background:white; color:#7B4FA6; font-size:10px; font-weight:700; padding:5px 12px; border-radius:100px; }
+.dash-section-lbl { font-size:10px; font-weight:700; color:#1A1025; padding:0 14px; margin-top:10px; margin-bottom:6px; flex-shrink:0; }
+.dash-cats { display:flex; gap:7px; padding:0 14px; overflow:hidden; flex-shrink:0; }
+.dash-cat { flex-shrink:0; background:white; border:1px solid #E8E2F0; border-radius:20px; padding:5px 10px; font-size:9px; font-weight:600; color:#4A3D5C; white-space:nowrap; }
+.dash-cat.active { background:#7B4FA6; color:white; border-color:#7B4FA6; }
+.dash-providers { padding:0 12px; flex-shrink:0; }
+.dash-provider { background:white; border:1px solid #E8E2F0; border-radius:12px; padding:10px 12px; display:flex; align-items:center; gap:9px; margin-bottom:7px; }
+.dp-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; }
+.dp-name { font-size:11px; font-weight:700; color:#1A1025; }
+.dp-sub { font-size:9px; color:#9080A8; margin-top:1px; }
+.dp-rating { margin-left:auto; font-size:10px; font-weight:700; color:#D4974A; }
+.dp-cac { font-size:8px; font-weight:700; color:#4CAF82; background:rgba(76,175,130,.1); border-radius:4px; padding:1px 5px; }
+
+/* BOOKING CONFIRMED */
+.sc3 { background:#FAF8F5; }
+.confirm-topbar { background:white; padding:36px 16px 14px; border-bottom:1px solid #F0EBF8; display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.confirm-back { width:28px; height:28px; border-radius:8px; background:#F3EFF9; display:flex; align-items:center; justify-content:center; font-size:12px; color:#7B4FA6; }
+.confirm-topbar-title { font-family:Georgia,serif; font-size:15px; font-weight:700; color:#1A1025; }
+.confirm-hero { background:linear-gradient(135deg,#7B4FA6 0%,#C084E8 100%); margin:12px; border-radius:16px; padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center; flex-shrink:0; }
+.confirm-check { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.2); border:2px solid rgba(255,255,255,.6); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:10px; animation:checkPop 9s 6s infinite; }
+@keyframes checkPop { 0%{transform:scale(0);opacity:0} 8%{transform:scale(1.15);opacity:1} 12%{transform:scale(1)} 28%{transform:scale(1);opacity:1} 33%{opacity:0} 100%{opacity:0;transform:scale(0)} }
+.confirm-title { font-family:Georgia,serif; font-size:16px; font-weight:700; color:white; font-style:italic; margin-bottom:4px; }
+.confirm-ref { font-size:10px; color:rgba(255,255,255,.7); letter-spacing:1px; text-transform:uppercase; }
+.confirm-details { margin:0 12px; background:white; border:1px solid #E8E2F0; border-radius:14px; overflow:hidden; flex-shrink:0; }
+.cd-row { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border-bottom:1px solid #F0EBF8; }
+.cd-row:last-child { border-bottom:none; }
+.cd-key { font-size:9px; color:#9080A8; }
+.cd-val { font-size:10px; font-weight:600; color:#1A1025; text-align:right; }
+.cd-val.green { color:#4CAF82; }
+.cd-val.purple { color:#7B4FA6; }
+.confirm-escrow { margin:7px 12px 0; background:rgba(76,175,130,.08); border:1px solid rgba(76,175,130,.2); border-radius:11px; padding:9px 12px; display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.ce-icon { font-size:13px; flex-shrink:0; }
+.ce-text { font-size:9px; color:#4A3D5C; line-height:1.5; }
+.confirm-cta { margin:7px 12px 0; background:#7B4FA6; border-radius:11px; padding:11px; text-align:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
 </style>
 </head>
 <body>
-
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursor-ring"></div>
 
@@ -958,91 +405,159 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg-text">Beauty</div>
+  <div class="hero-left">
+    <div class="hero-bg-text">Beauty</div>
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Now live in Lagos, Nigeria</div>
 
-  <div class="hero-badge">
-    <div class="hero-badge-dot"></div>
-    Now live in Lagos, Nigeria
+    <h1>Your beauty,
+      <span class="accent-word">your rules.</span>
+      <span class="outline-word">Your city.</span>
+    </h1>
+
+    <p class="hero-sub">Book trusted beauty and grooming professionals — at home or walk-in. Escrow-protected payments, WhatsApp-powered booking. Lagos's smartest beauty marketplace.</p>
+
+    <!-- Neighbourhood pills -->
+    <div class="area-pills">
+      <span class="area-pill">📍 Lekki</span>
+      <span class="area-pill">📍 Victoria Island</span>
+      <span class="area-pill">📍 Ikoyi</span>
+      <span class="area-pill">📍 Ikeja</span>
+      <span class="area-pill">📍 Surulere</span>
+      <span class="area-pill">📍 Yaba</span>
+      <span class="area-pill">📍 Gbagada</span>
+      <span class="area-pill">📍 Ajah</span>
+    </div>
+
+    <!-- Search bar -->
+    <div style="position:relative;margin-bottom:28px">
+      <div class="hero-search" id="heroSearch">
+        <input class="hs-input" id="hsInput" type="text" placeholder="Search service or provider…" autocomplete="off">
+        <div class="hs-divider"></div>
+        <select class="hs-loc" id="hsLoc">
+          <option value="">All Lagos</option>
+          <option>Lekki Phase 1</option><option>Lekki Phase 2</option>
+          <option>Victoria Island</option><option>Ikoyi</option>
+          <option>Ikeja</option><option>Surulere</option>
+          <option>Yaba</option><option>Gbagada</option>
+          <option>Ajah</option><option>Magodo</option>
+        </select>
+        <button class="hs-btn" onclick="doSearch()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+      <div class="search-drop" id="searchDrop"></div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#download" class="btn-primary">Book a Service <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#providers" class="btn-outline">Join as Provider</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num counting" data-target="500" data-suffix="+">0+</span><span class="stat-label">Verified Providers</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num counting" data-target="12000" data-suffix="+">0+</span><span class="stat-label">Services Booked</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num" style="color:var(--amber)">4.9★</span><span class="stat-label">Average Rating</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num" style="color:var(--green)">100%</span><span class="stat-label">Escrow Protected</span></div>
+    </div>
   </div>
 
-  <h1 class="hero-headline">
-    Your beauty,
-    <span class="accent-word">your rules.</span>
-    <span class="outline-word">Your city.</span>
-  </h1>
+  <!-- Hero right — animated phone mockup -->
+  <div class="hero-right" style="display:flex;align-items:center;justify-content:center;background:transparent;position:relative">
 
-  <p class="hero-sub">
-    Book trusted beauty and grooming professionals — at home or walk-in. Escrow-protected payments, WhatsApp-powered booking. Lagos's smartest beauty marketplace.
-  </p>
+    <!-- ambient orbs -->
+    <div style="position:absolute;top:60px;right:60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(192,132,232,.15) 0%,transparent 70%);pointer-events:none"></div>
+    <div style="position:absolute;bottom:80px;left:40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,200,.12) 0%,transparent 70%);pointer-events:none"></div>
 
-  <div class="hero-actions">
-    <a href="#" class="btn-primary">
-      Book a Service
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-    <a href="#providers" class="btn-outline">Join as Provider</a>
-  </div>
+    <div class="anim-phone-wrap">
+      <div class="anim-phone-glow"></div>
+      <div class="anim-phone-frame">
 
-  <div class="hero-stats">
-    <div class="stat-item">
-      <span class="stat-num">500+</span>
-      <span class="stat-label">Verified Providers</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">12K+</span>
-      <span class="stat-label">Services Booked</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">4.9★</span>
-      <span class="stat-label">Average Rating</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">100%</span>
-      <span class="stat-label">Escrow Protected</span>
-    </div>
-  </div>
-
-  <!-- Phone mockup -->
-  <div class="hero-float-card">
-    <div class="phone-frame">
-      <div class="phone-inner">
-        <div class="phone-topbar">
-          <div class="phone-greeting">Good afternoon 👋</div>
-          <div class="phone-name">Amara</div>
-        </div>
-        <div class="phone-hero-card">
-          <div class="phone-hero-card-tag">BOOK TODAY</div>
-          <div class="phone-hero-card-title">Beauty & grooming,<br>your way</div>
-          <div class="phone-hero-card-btn">Browse Providers</div>
-        </div>
-        <div class="phone-section-label">Categories</div>
-        <div class="phone-cats">
-          <div class="phone-cat" style="color:#D4547A;border-color:#D4547A33">🪢 Braids</div>
-          <div class="phone-cat" style="color:#7B4FA6;border-color:#7B4FA633">✂ Cuts</div>
-          <div class="phone-cat" style="color:#4CAF82;border-color:#4CAF8233">🪒 Barbing</div>
-          <div class="phone-cat" style="color:#C084E8;border-color:#C084E833">💄 Makeup</div>
-        </div>
-        <div class="phone-section-label" style="margin-top:12px">Nearby Providers</div>
-        <div class="phone-provider">
-          <div class="phone-provider-avatar" style="background:#4CAF8218;color:#4CAF82">SC</div>
-          <div>
-            <div class="phone-provider-name">Supreme Cuts</div>
-            <div class="phone-provider-meta">Lekki · 0.8km · CAC ✓</div>
+        <!-- SCREEN 1: SPLASH -->
+        <div class="anim-screen sc1">
+          <div class="splash-logo-wrap"><span class="splash-s">S</span></div>
+          <div class="splash-wordmark">STARKEL</div>
+          <div class="splash-tagline">Nigeria's Beauty &amp; Grooming Marketplace</div>
+          <div class="splash-dots">
+            <div class="splash-dot active"></div>
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
           </div>
-          <div class="phone-provider-rating">4.9★</div>
         </div>
-        <div class="phone-provider">
-          <div class="phone-provider-avatar" style="background:#D4547A18;color:#D4547A">ZB</div>
-          <div>
-            <div class="phone-provider-name">Zara Beauty Studio</div>
-            <div class="phone-provider-meta">Victoria Island · 1.4km · CAC ✓</div>
+
+        <!-- SCREEN 2: CLIENT DASHBOARD -->
+        <div class="anim-screen sc2">
+          <div class="dash-topbar">
+            <div>
+              <div class="dash-greeting">Good afternoon 👋</div>
+              <div class="dash-name">Amara</div>
+            </div>
+            <div class="dash-avatar">AA</div>
           </div>
-          <div class="phone-provider-rating">4.8★</div>
+          <div class="dash-hero-card">
+            <div class="dhc-tag">BOOK TODAY</div>
+            <div class="dhc-title">Beauty &amp; grooming,<br>your way</div>
+            <div class="dhc-btn">Browse Providers</div>
+          </div>
+          <div class="dash-section-lbl">Categories</div>
+          <div class="dash-cats">
+            <div class="dash-cat active">✂ Cuts</div>
+            <div class="dash-cat">🪢 Braids</div>
+            <div class="dash-cat">💄 Makeup</div>
+            <div class="dash-cat">💅 Nails</div>
+          </div>
+          <div class="dash-section-lbl" style="margin-top:10px">Nearby Providers</div>
+          <div class="dash-providers">
+            <div class="dash-provider">
+              <div class="dp-av" style="background:rgba(76,175,130,.15);color:#4CAF82">SC</div>
+              <div><div class="dp-name">Supreme Cuts</div><div class="dp-sub">Barbing · Lekki · 0.8km</div></div>
+              <div class="dp-cac">CAC</div>
+              <div class="dp-rating">4.9★</div>
+            </div>
+            <div class="dash-provider">
+              <div class="dp-av" style="background:rgba(212,84,122,.15);color:#D4547A">ZB</div>
+              <div><div class="dp-name">Zara Beauty</div><div class="dp-sub">Braids · VI · 1.4km</div></div>
+              <div class="dp-cac">CAC</div>
+              <div class="dp-rating">4.8★</div>
+            </div>
+            <div class="dash-provider">
+              <div class="dp-av" style="background:rgba(192,132,232,.15);color:#C084E8">GC</div>
+              <div><div class="dp-name">Glow by Chisom</div><div class="dp-sub">Makeup · Ikoyi · 2.1km</div></div>
+              <div class="dp-cac">CAC</div>
+              <div class="dp-rating">4.9★</div>
+            </div>
+          </div>
         </div>
-        <div style="height:16px"></div>
+
+        <!-- SCREEN 3: BOOKING CONFIRMED -->
+        <div class="anim-screen sc3">
+          <div class="confirm-topbar">
+            <div class="confirm-back">←</div>
+            <div class="confirm-topbar-title">Booking Confirmed</div>
+          </div>
+          <div class="confirm-hero">
+            <div class="confirm-check">✓</div>
+            <div class="confirm-title">You're all booked!</div>
+            <div class="confirm-ref">Ref: SK-2041</div>
+          </div>
+          <div class="confirm-details">
+            <div class="cd-row"><div class="cd-key">Provider</div><div class="cd-val">Glow by Chisom</div></div>
+            <div class="cd-row"><div class="cd-key">Service</div><div class="cd-val">Bridal Makeup</div></div>
+            <div class="cd-row"><div class="cd-key">Date &amp; Time</div><div class="cd-val">Sat 26 Apr · 2:00 PM</div></div>
+            <div class="cd-row"><div class="cd-key">Location</div><div class="cd-val">Your address, Ikoyi</div></div>
+            <div class="cd-row"><div class="cd-key">Amount Paid</div><div class="cd-val purple">₦20,700</div></div>
+            <div class="cd-row"><div class="cd-key">Status</div><div class="cd-val green">● Escrow Active</div></div>
+          </div>
+          <div class="confirm-escrow">
+            <div class="ce-icon">🔒</div>
+            <div class="ce-text">Funds locked in escrow. Released to provider only after you confirm completion.</div>
+          </div>
+          <div class="confirm-cta">View Provider Contact →</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1051,22 +566,47 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track">
-    <div class="ticker-item"><span class="ticker-dot">✦</span> CAC-Verified Providers</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Escrow-Protected Payments</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> WhatsApp Smart Booking</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Home Service Available</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Dispute Resolution</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Instant Quotes</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Lagos's Beauty Marketplace</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> CAC-Verified Providers</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Escrow-Protected Payments</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> WhatsApp Smart Booking</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Home Service Available</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Dispute Resolution</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Instant Quotes</div>
-    <div class="ticker-item"><span class="ticker-dot">✦</span> Lagos's Beauty Marketplace</div>
+    <div class="ticker-item"><span class="ticker-dot">✦</span>CAC-Verified Providers</div><div class="ticker-item"><span class="ticker-dot">✦</span>Escrow-Protected Payments</div><div class="ticker-item"><span class="ticker-dot">✦</span>WhatsApp Smart Booking</div><div class="ticker-item"><span class="ticker-dot">✦</span>Home Service Available</div><div class="ticker-item"><span class="ticker-dot">✦</span>Dispute Resolution</div><div class="ticker-item"><span class="ticker-dot">✦</span>Instant Quotes</div><div class="ticker-item"><span class="ticker-dot">✦</span>Lagos's Beauty Marketplace</div><div class="ticker-item"><span class="ticker-dot">✦</span>CAC-Verified Providers</div><div class="ticker-item"><span class="ticker-dot">✦</span>Escrow-Protected Payments</div><div class="ticker-item"><span class="ticker-dot">✦</span>WhatsApp Smart Booking</div><div class="ticker-item"><span class="ticker-dot">✦</span>Home Service Available</div><div class="ticker-item"><span class="ticker-dot">✦</span>Dispute Resolution</div><div class="ticker-item"><span class="ticker-dot">✦</span>Instant Quotes</div><div class="ticker-item"><span class="ticker-dot">✦</span>Lagos's Beauty Marketplace</div>
   </div>
 </div>
+
+<!-- PHOTO GALLERY -->
+<section class="gallery-section reveal">
+  <div class="gallery-label">Real Services. Real Lagos.</div>
+  <h2 class="gallery-h">The finest beauty <em>professionals</em><br>in the city.</h2>
+  <div class="gallery-grid">
+    <div class="g-cell g-tall reveal">
+      <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=700&q=80&fit=crop" alt="Luxury Salon">
+      <div class="g-overlay"></div>
+      <div class="g-label">Luxury Salon · Lekki</div>
+      <div class="g-pill">✓ CAC</div>
+    </div>
+    <div class="g-cell reveal d1">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700&q=80&fit=crop&crop=top" alt="Braiding">
+      <div class="g-overlay"></div>
+      <div class="g-label">Knotless Braids · VI</div>
+      <div class="g-pill">✓ CAC</div>
+    </div>
+    <div class="g-cell reveal d2">
+      <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=700&q=80&fit=crop" alt="Makeup">
+      <div class="g-overlay"></div>
+      <div class="g-label">Bridal Makeup · Ikoyi</div>
+      <div class="g-pill">✓ CAC</div>
+    </div>
+    <div class="g-cell reveal d1">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=700&q=80&fit=crop" alt="Barbing">
+      <div class="g-overlay"></div>
+      <div class="g-label">Classic Fade · Ikeja</div>
+      <div class="g-pill">✓ CAC</div>
+    </div>
+    <div class="g-cell reveal d2">
+      <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=700&q=80&fit=crop" alt="Nails">
+      <div class="g-overlay"></div>
+      <div class="g-label">Nail Art · Surulere</div>
+      <div class="g-pill">✓ CAC</div>
+    </div>
+  </div>
+</section>
 
 <!-- HOW IT WORKS -->
 <section class="section how-section" id="how">
@@ -1074,24 +614,33 @@
     <div class="section-tag">How it works</div>
     <h2 class="section-headline">Booking in<br><em>3 simple steps</em></h2>
   </div>
-  <div class="how-grid reveal">
-    <div class="how-cell">
-      <div class="how-step-num">01</div>
-      <div class="how-icon">🔍</div>
-      <div class="how-title">Discover & Enquire</div>
-      <div class="how-desc">Browse verified providers near you. Send an enquiry with your inspiration photo directly through WhatsApp — no app download needed.</div>
+  <div class="how-grid">
+    <div class="how-cell reveal d1">
+      <img class="how-cell-photo" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=700&q=80&fit=crop" alt="Search & Enquire">
+      <div class="how-cell-body">
+        <div class="how-step-num">01</div>
+        <div class="how-icon">🔍</div>
+        <div class="how-title">Discover & Enquire</div>
+        <div class="how-desc">Browse verified providers near you. Send an enquiry with your inspiration photo directly through WhatsApp — no app download needed.</div>
+      </div>
     </div>
-    <div class="how-cell">
-      <div class="how-step-num">02</div>
-      <div class="how-icon">💬</div>
-      <div class="how-title">Get a Quote & Pay</div>
-      <div class="how-desc">The provider replies with a price. You pay securely on the platform — funds are held in escrow until your service is done.</div>
+    <div class="how-cell reveal d2">
+      <img class="how-cell-photo" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=700&q=80&fit=crop" alt="Pay Securely">
+      <div class="how-cell-body">
+        <div class="how-step-num">02</div>
+        <div class="how-icon">💬</div>
+        <div class="how-title">Get a Quote & Pay</div>
+        <div class="how-desc">The provider replies with a price. You pay securely on the platform — funds are held in escrow until your service is done.</div>
+      </div>
     </div>
-    <div class="how-cell">
-      <div class="how-step-num">03</div>
-      <div class="how-icon">✨</div>
-      <div class="how-title">Get Served & Release</div>
-      <div class="how-desc">Provider delivers the service. You confirm completion and release payment. Rate your experience. Everyone wins.</div>
+    <div class="how-cell reveal d3">
+      <img class="how-cell-photo" src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=700&q=80&fit=crop" alt="Handshake & Release">
+      <div class="how-cell-body">
+        <div class="how-step-num">03</div>
+        <div class="how-icon">✨</div>
+        <div class="how-title">Get Served & Release</div>
+        <div class="how-desc">Provider delivers the service. You confirm completion and release payment. Rate your experience. Everyone wins.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1100,208 +649,235 @@
 <section class="section services-section" id="services">
   <div class="reveal">
     <div class="section-tag">All Services</div>
-    <h2 class="section-headline">Every beauty<br>service, <em>one<br>platform</em></h2>
+    <h2 class="section-headline">Every beauty service,<br><em>one platform</em></h2>
   </div>
-  <div class="services-grid reveal">
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#7B4FA612">✂️</div>
-      <div class="service-name">Haircut & Styling</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#4CAF8212">🪒</div>
-      <div class="service-name">Barbing</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#D4547A12">🪢</div>
-      <div class="service-name">Braids & Locs</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#C084E812">💄</div>
-      <div class="service-name">Makeup</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#A855F712">💅</div>
-      <div class="service-name">Nails & Gel</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#14B8A612">🧴</div>
-      <div class="service-name">Facials & Skin</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#3B82F612">🛁</div>
-      <div class="service-name">Massage & Spa</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#F9731612">👁</div>
-      <div class="service-name">Lashes & Brows</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#E8A0C812">👩</div>
-      <div class="service-name">Weaves & Wigs</div>
-    </div>
-    <div class="service-card">
-      <div class="service-icon-wrap" style="background:#22C55E12">🎨</div>
-      <div class="service-name">Hair Coloring</div>
-    </div>
+  <div class="services-grid">
+    <a class="service-card reveal" href="#" style="transition-delay:0.00s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80&fit=crop" alt="Haircut & Styling" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#7B4FA612">✂️</div>
+        <div class="service-name">Haircut & Styling</div>
+        <div class="service-count">80+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.05s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80&fit=crop" alt="Barbing" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#4CAF8212">🪒</div>
+        <div class="service-name">Barbing</div>
+        <div class="service-count">120+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.10s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1499244429147-986b9fa8bf3c?w=600&q=80&fit=crop&crop=top" alt="Braids & Locs" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#D4547A12">🪢</div>
+        <div class="service-name">Braids & Locs</div>
+        <div class="service-count">65+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.15s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80&fit=crop" alt="Makeup" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#C084E812">💄</div>
+        <div class="service-name">Makeup</div>
+        <div class="service-count">55+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.20s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&q=80&fit=crop" alt="Nails & Gel" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#A855F712">💅</div>
+        <div class="service-name">Nails & Gel</div>
+        <div class="service-count">70+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.25s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80&fit=crop" alt="Facials & Skin" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#14B8A612">🧴</div>
+        <div class="service-name">Facials & Skin</div>
+        <div class="service-count">40+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.30s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80&fit=crop" alt="Massage & Spa" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#3B82F612">🛁</div>
+        <div class="service-name">Massage & Spa</div>
+        <div class="service-count">30+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.35s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?w=600&q=80&fit=crop&crop=top" alt="Lashes & Brows" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#F9731612">👁️</div>
+        <div class="service-name">Lashes & Brows</div>
+        <div class="service-count">50+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.40s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80&fit=crop&crop=top" alt="Weaves & Wigs" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#E8A0C812">👩</div>
+        <div class="service-name">Weaves & Wigs</div>
+        <div class="service-count">45+ providers</div>
+      </div>
+    </a><a class="service-card reveal" href="#" style="transition-delay:0.45s">
+      <img class="service-photo" src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=600&q=80&fit=crop" alt="Hair Colouring" onerror="this.style.display='none'">
+      <div class="service-info">
+        <div class="service-icon-wrap" style="background:#22C55E12">🎨</div>
+        <div class="service-name">Hair Colouring</div>
+        <div class="service-count">35+ providers</div>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- TRUST -->
-<section class="section" id="trust" style="background:white;border-top:1px solid var(--border);">
+<!-- TRUST / WHY STARKEL -->
+<section class="section" id="trust" style="background:white;border-top:1px solid var(--border)">
   <div class="trust-grid">
     <div class="reveal">
       <div class="section-tag">Why Starkel</div>
       <h2 class="section-headline">Built for<br>Lagos.<br><em>Built for<br>trust.</em></h2>
-      <p class="section-body">Every booking is protected from start to finish. Your money doesn't move until you say so.</p>
+      <p style="font-size:15px;color:var(--text1);line-height:1.75;max-width:440px;font-weight:300;margin-top:18px">Every booking is protected from start to finish. Your money doesn't move until you say so.</p>
       <div class="trust-feature-list">
-        <div class="trust-feature">
-          <div class="trust-icon" style="background:#4CAF8214">🛡️</div>
-          <div>
-            <div class="trust-feature-title">Escrow-Protected Payments</div>
-            <div class="trust-feature-desc">Your payment is held securely in escrow. Released to the provider only after you confirm the service is done to your satisfaction.</div>
-          </div>
-        </div>
-        <div class="trust-feature">
-          <div class="trust-icon" style="background:#7B4FA614">✅</div>
-          <div>
-            <div class="trust-feature-title">CAC-Verified Providers</div>
-            <div class="trust-feature-desc">Every provider on Starkel is CAC-registered and verified. No random strangers — only accountable professionals.</div>
-          </div>
-        </div>
-        <div class="trust-feature">
-          <div class="trust-icon" style="background:#4CAF8214">💬</div>
-          <div>
-            <div class="trust-feature-title">WhatsApp Smart Enquiry</div>
-            <div class="trust-feature-desc">Send your request via WhatsApp. Get a quote directly from the provider. No back-and-forth, no hidden fees.</div>
-          </div>
-        </div>
-        <div class="trust-feature">
-          <div class="trust-icon" style="background:#D4974A14">⚖️</div>
-          <div>
-            <div class="trust-feature-title">Dispute Resolution</div>
-            <div class="trust-feature-desc">If anything goes wrong, our team reviews the case and resolves it fairly — protecting both clients and providers.</div>
-          </div>
-        </div>
+        <div class="trust-feature"><div class="trust-icon" style="background:#4CAF8214">🛡️</div><div><div class="trust-feature-title">Escrow-Protected Payments</div><div class="trust-feature-desc">Your payment is held securely in escrow. Released to the provider only after you confirm the service is done to your satisfaction.</div></div></div>
+        <div class="trust-feature"><div class="trust-icon" style="background:#7B4FA614">✅</div><div><div class="trust-feature-title">CAC-Verified Providers</div><div class="trust-feature-desc">Every provider on Starkel is CAC-registered and verified. No random strangers — only accountable professionals.</div></div></div>
+        <div class="trust-feature"><div class="trust-icon" style="background:#4CAF8214">💬</div><div><div class="trust-feature-title">WhatsApp Smart Enquiry</div><div class="trust-feature-desc">Send your request via WhatsApp. Get a quote directly from the provider. No back-and-forth, no hidden fees.</div></div></div>
+        <div class="trust-feature"><div class="trust-icon" style="background:#D4974A14">⚖️</div><div><div class="trust-feature-title">Dispute Resolution</div><div class="trust-feature-desc">If anything goes wrong, our team reviews the case and resolves it fairly — protecting both clients and providers.</div></div></div>
       </div>
     </div>
-
-    <div class="reveal">
-      <div class="escrow-visual">
-        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text0);margin-bottom:24px;font-style:italic">Escrow Flow</div>
-        <div class="escrow-step">
-          <div class="escrow-step-dot" style="background:var(--accent)"></div>
-          <div>
-            <div class="escrow-step-text">Client pays ₦20,700</div>
-            <div class="escrow-step-sub">Funds locked in escrow immediately</div>
-          </div>
-          <svg style="margin-left:auto;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9080A8" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="escrow-step">
-          <div class="escrow-step-dot" style="background:var(--amber)"></div>
-          <div>
-            <div class="escrow-step-text">Provider contact unlocked</div>
-            <div class="escrow-step-sub">Client gets provider's direct number</div>
-          </div>
-        </div>
-        <div class="escrow-step">
-          <div class="escrow-step-dot" style="background:var(--pink)"></div>
-          <div>
-            <div class="escrow-step-text">Service is delivered</div>
-            <div class="escrow-step-sub">Provider marks complete</div>
-          </div>
-        </div>
-        <div class="escrow-step">
-          <div class="escrow-step-dot" style="background:var(--green)"></div>
-          <div>
-            <div class="escrow-step-text">Client confirms ✓</div>
-            <div class="escrow-step-sub">₦18,000 released to provider</div>
-          </div>
-        </div>
-        <div style="margin-top:22px;padding:16px;background:var(--green-lo);border:1px solid rgba(76,175,130,0.2);border-radius:12px;display:flex;gap:10px;align-items:flex-start">
-          <span style="font-size:14px;flex-shrink:0">🔒</span>
-          <div style="font-size:12px;color:var(--text1);line-height:1.6">If a dispute arises, funds remain frozen and our admin team reviews the case within 24 hours.</div>
+    <div class="reveal d2">
+      <div class="trust-photo-wrap">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=80&fit=crop" alt="Beauty treatment">
+        <div class="trust-photo-badge">
+          <div class="tp-badge-icon">🔒</div>
+          <div class="tp-badge-text"><div class="top">Escrow Active — ₦20,700 locked</div><div class="bot">Released on client confirmation only</div></div>
         </div>
       </div>
-
-      <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px">
-          <div style="font-size:30px;font-weight:700;color:var(--green);font-family:'Playfair Display',serif">97%</div>
-          <div style="font-size:12px;color:var(--text1);margin-top:6px">Escrow Release Rate</div>
-        </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:22px">
-          <div style="font-size:30px;font-weight:700;color:var(--accent);font-family:'Playfair Display',serif">3%</div>
-          <div style="font-size:12px;color:var(--text1);margin-top:6px">Dispute Rate</div>
-        </div>
+      <div class="escrow-visual">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--text0);margin-bottom:20px;font-style:italic">Escrow Flow</div>
+        <div class="escrow-step"><div class="escrow-dot" style="background:var(--accent)"></div><div><div class="escrow-step-text">Client pays ₦20,700</div><div class="escrow-step-sub">Funds locked in escrow immediately</div></div><svg style="margin-left:auto;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9080A8" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="escrow-step"><div class="escrow-dot" style="background:var(--amber)"></div><div><div class="escrow-step-text">Provider contact unlocked</div><div class="escrow-step-sub">Client gets provider's direct number</div></div></div>
+        <div class="escrow-step"><div class="escrow-dot" style="background:var(--pink)"></div><div><div class="escrow-step-text">Service is delivered</div><div class="escrow-step-sub">Provider marks complete</div></div></div>
+        <div class="escrow-step"><div class="escrow-dot" style="background:var(--green)"></div><div><div class="escrow-step-text">Client confirms ✓</div><div class="escrow-step-sub">₦18,000 released to provider</div></div></div>
+        <div style="margin-top:16px;padding:14px;background:var(--green-lo);border:1px solid rgba(76,175,130,.2);border-radius:12px;display:flex;gap:10px;align-items:flex-start"><span style="font-size:14px;flex-shrink:0">🔒</span><div style="font-size:12px;color:var(--text1);line-height:1.6">If a dispute arises, funds remain frozen and our admin team reviews the case within 24 hours.</div></div>
+      </div>
+      <div class="escrow-stats">
+        <div class="escrow-stat"><div class="escrow-stat-num" style="color:var(--green)">97%</div><div class="escrow-stat-label">Escrow Release Rate</div></div>
+        <div class="escrow-stat"><div class="escrow-stat-num" style="color:var(--accent)">3%</div><div class="escrow-stat-label">Dispute Rate</div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOR CLIENTS / FOR PROVIDERS -->
-<section class="providers-cta section" id="providers">
+<section class="providers-cta" id="providers">
   <div class="providers-cta-inner">
-    <div class="cta-half">
-      <div class="cta-half-bg-num">✦</div>
-      <div class="cta-half-tag" style="color:var(--accent)">For Clients</div>
-      <div class="cta-half-headline">Look good.<br><em>Feel great.</em><br>Pay safe.</div>
-      <div class="cta-half-desc">Browse hundreds of verified beauty professionals across Lagos. Book home service or walk-in. Your money is always protected until you're happy.</div>
-      <a href="#" class="btn-primary">Book a Service →</a>
+    <div class="cta-half reveal">
+      <img class="cta-half-photo" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=700&q=80&fit=crop" alt="For Clients">
+      <div class="cta-half-body">
+        <div class="cta-half-bg-num">✦</div>
+        <div class="cta-half-tag" style="color:var(--accent)">
+          <span style="width:20px;height:1.5px;background:var(--accent);display:inline-block"></span>
+          For Clients
+        </div>
+        <div class="cta-half-headline">Look good.<br><em>Feel great.</em><br>Pay safe.</div>
+        <div class="cta-half-desc">Browse hundreds of verified beauty professionals across Lagos. Book home service or walk-in. Your money is always protected until you're happy.</div>
+        <div class="feat-list">
+          <div class="feat-item"><div class="fcheck" style="background:var(--accent-lo);border:1px solid var(--accent-mid)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7B4FA6" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Send inspiration photo via WhatsApp</div>
+          <div class="feat-item"><div class="fcheck" style="background:var(--accent-lo);border:1px solid var(--accent-mid)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7B4FA6" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Escrow payment — released only on your confirmation</div>
+          <div class="feat-item"><div class="fcheck" style="background:var(--accent-lo);border:1px solid var(--accent-mid)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#7B4FA6" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>24-hour dispute resolution if anything goes wrong</div>
+        </div>
+        <!-- Stats row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:24px 0 28px;padding:20px;background:var(--bg2);border-radius:14px;border:1px solid var(--border)">
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--accent)">500+</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:3px">Verified Providers</div>
+          </div>
+          <div style="text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--accent)">4.9★</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:3px">Average Rating</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--green)">100%</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:3px">Escrow Protected</div>
+          </div>
+        </div>
+        <a href="#download" class="btn-primary">Book a Service →</a>
+      </div>
     </div>
-    <div class="cta-half">
-      <div class="cta-half-bg-num">✦</div>
-      <div class="cta-half-tag" style="color:var(--green)">For Providers</div>
-      <div class="cta-half-headline">Earn more.<br><em>Build your</em><br>clientele.</div>
-      <div class="cta-half-desc">Join hundreds of salons and independent professionals earning on Starkel. Receive enquiries on WhatsApp, quote your price, get paid — it's that simple.</div>
-      <a href="#" class="btn-outline" style="border-color:var(--green);color:var(--green)">Join as a Provider →</a>
+    <div class="cta-half reveal d2">
+      <img class="cta-half-photo" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=700&q=80&fit=crop&crop=top" alt="For Providers">
+      <div class="cta-half-body">
+        <div class="cta-half-bg-num">✦</div>
+        <div class="cta-half-tag" style="color:var(--green)">
+          <span style="width:20px;height:1.5px;background:var(--green);display:inline-block"></span>
+          For Providers
+        </div>
+        <div class="cta-half-headline">Earn more.<br><em>Build your</em><br>clientele.</div>
+        <div class="cta-half-desc">Join hundreds of salons and independent professionals earning on Starkel. Receive enquiries on WhatsApp, quote your price, get paid — it's that simple.</div>
+        <div class="feat-list">
+          <div class="feat-item"><div class="fcheck" style="background:var(--green-lo);border:1px solid rgba(76,175,130,.25)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF82" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Receive enquiries directly on WhatsApp — no new app</div>
+          <div class="feat-item"><div class="fcheck" style="background:var(--green-lo);border:1px solid rgba(76,175,130,.25)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF82" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>85% payout on every booking — transferred fast</div>
+          <div class="feat-item"><div class="fcheck" style="background:var(--green-lo);border:1px solid rgba(76,175,130,.25)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF82" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>CAC badge makes clients trust and book you first</div>
+          <div class="feat-item"><div class="fcheck" style="background:var(--green-lo);border:1px solid rgba(76,175,130,.25)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4CAF82" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>No side-dealing — all bookings tracked on-platform</div>
+        </div>
+        <!-- Earnings preview card -->
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:20px 0 28px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:500">Average monthly earnings</div>
+            <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--text0)">₦180K<span style="font-size:16px;color:var(--green)">+</span></div>
+            <div style="font-size:11px;color:var(--green);margin-top:3px;font-weight:600">↑ 2x more than solo bookings</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:4px">Platform fee</div>
+            <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--accent)">15%</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:2px">You keep 85%</div>
+          </div>
+        </div>
+        <a href="#" class="btn-outline" style="border-color:var(--green);color:var(--green)">Join as a Provider →</a>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section testimonials-section">
-  <div class="reveal">
+<section style="background:var(--bg0);padding:80px 0 0;overflow:hidden">
+  <div style="padding:0 5vw;margin-bottom:52px" class="reveal">
     <div class="section-tag">Reviews</div>
     <h2 class="section-headline">Lagos <em>loves</em><br>Starkel</h2>
   </div>
-  <div class="testimonials-grid reveal">
-    <div class="testimonial-card">
-      <div class="testimonial-stars">
-        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-      </div>
-      <div class="testimonial-text">"I sent my reference photo on WhatsApp, got a quote in 15 minutes, and the barber was at my house by 3pm. The escrow gave me so much peace of mind."</div>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:#7B4FA618;color:#7B4FA6">TO</div>
-        <div>
-          <div class="author-name">Tunde Okafor</div>
-          <div class="author-meta">Client · Lekki Phase 1</div>
-        </div>
-      </div>
+
+  <!-- Scrolling row 1 — left -->
+  <div style="overflow:hidden;margin-bottom:16px;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)">
+    <div style="display:flex;gap:16px;animation:reviewScroll 40s linear infinite;width:max-content">
+      <!-- 6 cards, duplicated for seamless loop -->
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"I sent my reference photo on WhatsApp, got a quote in 15 minutes, and the barber was at my house by 3pm. The escrow gave me complete peace of mind."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">TO</div><div><div class="rev-name">Tunde Okafor</div><div class="rev-role">Client · Lekki Phase 1</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"As a mobile MUA, Starkel changed everything. I get enquiries straight on WhatsApp, quote my price and the platform handles the rest. Bookings doubled."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,84,122,.12);color:#D4547A">CN</div><div><div class="rev-name">Chisom Nwosu</div><div class="rev-role">Provider · Makeup Artist · Ikoyi</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"Finally a platform where I can see the provider's portfolio before booking. My knotless braids came out exactly like the photo I sent. 10/10 recommend."</p><div class="rev-author"><div class="rev-init" style="background:rgba(192,132,232,.12);color:#C084E8">AA</div><div><div class="rev-name">Amara Adeyemi</div><div class="rev-role">Client · Victoria Island</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"The escrow system is a game-changer. I paid, the stylist came, and I only released the money after I was satisfied. No stress, no drama. Starkel is the future."</p><div class="rev-author"><div class="rev-init" style="background:rgba(76,175,130,.12);color:#4CAF82">FK</div><div><div class="rev-name">Funke Karimu</div><div class="rev-role">Client · Surulere</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"Starkel gave my barbershop a whole new stream of clients. The CAC badge alone made people trust us before we even met. Best decision I made for my business."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,151,74,.12);color:#D4974A">EO</div><div><div class="rev-name">Emeka Obi</div><div class="rev-role">Provider · Supreme Cuts · Lekki</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"I was nervous about home service but Starkel's escrow meant I paid nothing until she left and I was happy. Best bridal makeup experience I've ever had."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">NB</div><div><div class="rev-name">Ngozi Bello</div><div class="rev-role">Client · Ikeja</div></div></div></div>
+      <!-- duplicate for loop -->
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"I sent my reference photo on WhatsApp, got a quote in 15 minutes, and the barber was at my house by 3pm. The escrow gave me complete peace of mind."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">TO</div><div><div class="rev-name">Tunde Okafor</div><div class="rev-role">Client · Lekki Phase 1</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"As a mobile MUA, Starkel changed everything. I get enquiries straight on WhatsApp, quote my price and the platform handles the rest. Bookings doubled."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,84,122,.12);color:#D4547A">CN</div><div><div class="rev-name">Chisom Nwosu</div><div class="rev-role">Provider · Makeup Artist · Ikoyi</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"Finally a platform where I can see the provider's portfolio before booking. My knotless braids came out exactly like the photo I sent. 10/10 recommend."</p><div class="rev-author"><div class="rev-init" style="background:rgba(192,132,232,.12);color:#C084E8">AA</div><div><div class="rev-name">Amara Adeyemi</div><div class="rev-role">Client · Victoria Island</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"The escrow system is a game-changer. I paid, the stylist came, and I only released the money after I was satisfied. No stress, no drama. Starkel is the future."</p><div class="rev-author"><div class="rev-init" style="background:rgba(76,175,130,.12);color:#4CAF82">FK</div><div><div class="rev-name">Funke Karimu</div><div class="rev-role">Client · Surulere</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"Starkel gave my barbershop a whole new stream of clients. The CAC badge alone made people trust us before we even met. Best decision I made for my business."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,151,74,.12);color:#D4974A">EO</div><div><div class="rev-name">Emeka Obi</div><div class="rev-role">Provider · Supreme Cuts · Lekki</div></div></div></div>
+      <div class="rev-card-flat"><div class="rev-stars">★★★★★</div><p class="rev-text">"I was nervous about home service but Starkel's escrow meant I paid nothing until she left and I was happy. Best bridal makeup experience I've ever had."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">NB</div><div><div class="rev-name">Ngozi Bello</div><div class="rev-role">Client · Ikeja</div></div></div></div>
     </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">
-        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-      </div>
-      <div class="testimonial-text">"As a mobile MUA, Starkel changed everything for me. I get enquiries straight on WhatsApp, quote my price and the platform handles the rest. My bookings doubled in 2 months."</div>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:#D4547A18;color:#D4547A">CN</div>
-        <div>
-          <div class="author-name">Chisom Nwosu</div>
-          <div class="author-meta">Provider · Makeup Artist · Ikoyi</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card">
-      <div class="testimonial-stars">
-        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
-      </div>
-      <div class="testimonial-text">"Finally a platform where I can see the provider's portfolio before booking. My knotless braids came out exactly like the photo I sent. 10/10 would recommend."</div>
-      <div class="testimonial-author">
-        <div class="author-avatar" style="background:#E8A0C818;color:#C084E8">AA</div>
-        <div>
-          <div class="author-name">Amara Adeyemi</div>
-          <div class="author-meta">Client · Victoria Island</div>
-        </div>
-      </div>
+  </div>
+
+  <!-- Scrolling row 2 — right (reverse) -->
+  <div style="overflow:hidden;padding-bottom:80px;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%)">
+    <div style="display:flex;gap:16px;animation:reviewScrollR 44s linear infinite;width:max-content">
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"My nail technician arrived on time, did an amazing job, and the whole process was so seamless. WhatsApp booking is a stroke of genius for Nigerian market."</p><div class="rev-author"><div class="rev-init" style="background:rgba(168,85,247,.12);color:#A855F7">SA</div><div><div class="rev-name">Sola Adebayo</div><div class="rev-role">Client · Yaba</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"I list on Starkel and my traditional Instagram DM approach at the same time — Starkel clients are 3x more likely to actually show up and pay. The escrow does that."</p><div class="rev-author"><div class="rev-init" style="background:rgba(76,175,130,.12);color:#4CAF82">KA</div><div><div class="rev-name">Kemi Akinlabi</div><div class="rev-role">Provider · Braiding Specialist · VI</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Used Starkel for my sister's wedding makeup and hair. Two separate providers, both CAC-verified, both flawless. The escrow made us confident in both bookings."</p><div class="rev-author"><div class="rev-init" style="background:rgba(232,160,200,.2);color:#D4547A">TI</div><div><div class="rev-name">Temi Ihejirika</div><div class="rev-role">Client · Lekki Phase 2</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Before Starkel, clients would ghost after I gave a quote. Now they pay into escrow first, so I know every appointment is serious. My cancellation rate dropped to zero."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,151,74,.12);color:#D4974A">DC</div><div><div class="rev-name">David Chukwu</div><div class="rev-role">Provider · Barber · Gbagada</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Safe, professional, and punctual. I've booked 4 times on Starkel and every provider has been exactly as their portfolio showed. This is how it should always work."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">RA</div><div><div class="rev-name">Remi Adesanya</div><div class="rev-role">Client · Magodo</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"The CAC verification process was simple and now I get premium clients who take appointments seriously. My revenue is up 60% since joining. Cannot recommend enough."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,84,122,.12);color:#D4547A">BO</div><div><div class="rev-name">Bunmi Okafor</div><div class="rev-role">Provider · Nail Tech · Ikeja</div></div></div></div>
+      <!-- duplicate -->
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"My nail technician arrived on time, did an amazing job, and the whole process was so seamless. WhatsApp booking is a stroke of genius for Nigerian market."</p><div class="rev-author"><div class="rev-init" style="background:rgba(168,85,247,.12);color:#A855F7">SA</div><div><div class="rev-name">Sola Adebayo</div><div class="rev-role">Client · Yaba</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"I list on Starkel and my traditional Instagram DM approach at the same time — Starkel clients are 3x more likely to actually show up and pay. The escrow does that."</p><div class="rev-author"><div class="rev-init" style="background:rgba(76,175,130,.12);color:#4CAF82">KA</div><div><div class="rev-name">Kemi Akinlabi</div><div class="rev-role">Provider · Braiding Specialist · VI</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Used Starkel for my sister's wedding makeup and hair. Two separate providers, both CAC-verified, both flawless. The escrow made us confident in both bookings."</p><div class="rev-author"><div class="rev-init" style="background:rgba(232,160,200,.2);color:#D4547A">TI</div><div><div class="rev-name">Temi Ihejirika</div><div class="rev-role">Client · Lekki Phase 2</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Before Starkel, clients would ghost after I gave a quote. Now they pay into escrow first, so I know every appointment is serious. My cancellation rate dropped to zero."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,151,74,.12);color:#D4974A">DC</div><div><div class="rev-name">David Chukwu</div><div class="rev-role">Provider · Barber · Gbagada</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"Safe, professional, and punctual. I've booked 4 times on Starkel and every provider has been exactly as their portfolio showed. This is how it should always work."</p><div class="rev-author"><div class="rev-init" style="background:rgba(123,79,166,.12);color:#7B4FA6">RA</div><div><div class="rev-name">Remi Adesanya</div><div class="rev-role">Client · Magodo</div></div></div></div>
+      <div class="rev-card-flat" style="background:var(--bg3)"><div class="rev-stars">★★★★★</div><p class="rev-text">"The CAC verification process was simple and now I get premium clients who take appointments seriously. My revenue is up 60% since joining. Cannot recommend enough."</p><div class="rev-author"><div class="rev-init" style="background:rgba(212,84,122,.12);color:#D4547A">BO</div><div><div class="rev-name">Bunmi Okafor</div><div class="rev-role">Provider · Nail Tech · Ikeja</div></div></div></div>
     </div>
   </div>
 </section>
@@ -1309,81 +885,36 @@
 <!-- CITY STRIP -->
 <div class="city-strip">
   <div class="city-strip-track">
-    <span class="city-strip-item">Lagos</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Lekki</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Victoria Island</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Ikoyi</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Surulere</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Ikeja</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Yaba</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Gbagada</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Lagos</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Lekki</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Victoria Island</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Ikoyi</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Surulere</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Ikeja</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Yaba</span><span class="city-strip-sep">·</span>
-    <span class="city-strip-item">Gbagada</span><span class="city-strip-sep">·</span>
+    <span class="city-strip-item">Lagos</span><span class="city-strip-sep">·</span><span class="city-strip-item">Lekki</span><span class="city-strip-sep">·</span><span class="city-strip-item">Victoria Island</span><span class="city-strip-sep">·</span><span class="city-strip-item">Ikoyi</span><span class="city-strip-sep">·</span><span class="city-strip-item">Surulere</span><span class="city-strip-sep">·</span><span class="city-strip-item">Ikeja</span><span class="city-strip-sep">·</span><span class="city-strip-item">Yaba</span><span class="city-strip-sep">·</span><span class="city-strip-item">Gbagada</span><span class="city-strip-sep">·</span><span class="city-strip-item">Lagos</span><span class="city-strip-sep">·</span><span class="city-strip-item">Lekki</span><span class="city-strip-sep">·</span><span class="city-strip-item">Victoria Island</span><span class="city-strip-sep">·</span><span class="city-strip-item">Ikoyi</span><span class="city-strip-sep">·</span><span class="city-strip-item">Surulere</span><span class="city-strip-sep">·</span><span class="city-strip-item">Ikeja</span><span class="city-strip-sep">·</span><span class="city-strip-item">Yaba</span><span class="city-strip-sep">·</span><span class="city-strip-item">Gbagada</span><span class="city-strip-sep">·</span>
   </div>
 </div>
 
-<!-- DOWNLOAD CTA -->
-<section class="download-section">
+<!-- DOWNLOAD -->
+<section class="download-section" id="download">
   <div class="download-inner">
-    <div>
-      <div style="font-size:11px;color:var(--text2);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="width:20px;height:1.5px;background:var(--accent);display:inline-block"></span>Download the App</div>
+    <div class="download-left reveal">
+      <div class="download-tag">Download the App</div>
       <div class="download-headline">Get Starkel.<br><em>Get beautiful.</em></div>
       <div class="download-sub">Book your next appointment in under 60 seconds. Available now on iOS and Android across Lagos.</div>
       <div class="download-btns">
         <a href="#" class="app-btn">
-          <svg width="20" height="22" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0.5 0.8C0.19 1.13 0 1.63 0 2.28V21.72C0 22.37 0.19 22.87 0.5 23.2L0.58 23.27L11.36 12.5V12.24L0.58 1.47L0.5 0.8Z" fill="url(#gp1)"/>
-            <path d="M14.92 16.07L11.36 12.5V12.24L14.93 8.67L15.03 8.73L19.27 11.17C20.5 11.87 20.5 13.01 19.27 13.71L15.03 16.01L14.92 16.07Z" fill="url(#gp2)"/>
-            <path d="M15.03 16.01L11.36 12.34L0.5 23.2C0.91 23.64 1.58 23.69 2.33 23.26L15.03 16.01Z" fill="url(#gp3)"/>
-            <path d="M15.03 8.73L2.33 1.47C1.58 1.04 0.91 1.1 0.5 1.53L11.36 12.37L15.03 8.73Z" fill="url(#gp4)"/>
-            <defs>
-              <linearGradient id="gp1" x1="10.44" y1="1.82" x2="-4.98" y2="17.25" gradientUnits="userSpaceOnUse"><stop stop-color="#00A0FF"/><stop offset="1" stop-color="#00E3FF"/></linearGradient>
-              <linearGradient id="gp2" x1="21.16" y1="12.37" x2="-0.48" y2="12.37" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE000"/><stop offset="1" stop-color="#FF9C00"/></linearGradient>
-              <linearGradient id="gp3" x1="13.17" y1="14.29" x2="-6.2" y2="33.66" gradientUnits="userSpaceOnUse"><stop stop-color="#FF3A44"/><stop offset="1" stop-color="#C31162"/></linearGradient>
-              <linearGradient id="gp4" x1="-2.1" y1="-5.59" x2="7.08" y2="3.6" gradientUnits="userSpaceOnUse"><stop stop-color="#32A071"/><stop offset="1" stop-color="#00F076"/></linearGradient>
-            </defs>
-          </svg>
-          <div>
-            <div class="app-btn-label">GET IT ON</div>
-            <div class="app-btn-store">Google Play</div>
-          </div>
+          <svg width="20" height="22" viewBox="0 0 22 24" fill="none"><path d="M0.5 0.8C0.19 1.13 0 1.63 0 2.28V21.72C0 22.37 0.19 22.87 0.5 23.2L0.58 23.27L11.36 12.5V12.24L0.58 1.47L0.5 0.8Z" fill="url(#gp1)"/><path d="M14.92 16.07L11.36 12.5V12.24L14.93 8.67L15.03 8.73L19.27 11.17C20.5 11.87 20.5 13.01 19.27 13.71L15.03 16.01L14.92 16.07Z" fill="url(#gp2)"/><path d="M15.03 16.01L11.36 12.34L0.5 23.2C0.91 23.64 1.58 23.69 2.33 23.26L15.03 16.01Z" fill="url(#gp3)"/><path d="M15.03 8.73L2.33 1.47C1.58 1.04 0.91 1.1 0.5 1.53L11.36 12.37L15.03 8.73Z" fill="url(#gp4)"/><defs><linearGradient id="gp1" x1="10.44" y1="1.82" x2="-4.98" y2="17.25" gradientUnits="userSpaceOnUse"><stop stop-color="#00A0FF"/><stop offset="1" stop-color="#00E3FF"/></linearGradient><linearGradient id="gp2" x1="21.16" y1="12.37" x2="-0.48" y2="12.37" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE000"/><stop offset="1" stop-color="#FF9C00"/></linearGradient><linearGradient id="gp3" x1="13.17" y1="14.29" x2="-6.2" y2="33.66" gradientUnits="userSpaceOnUse"><stop stop-color="#FF3A44"/><stop offset="1" stop-color="#C31162"/></linearGradient><linearGradient id="gp4" x1="-2.1" y1="-5.59" x2="7.08" y2="3.6" gradientUnits="userSpaceOnUse"><stop stop-color="#32A071"/><stop offset="1" stop-color="#00F076"/></linearGradient></defs></svg>
+          <div><div class="app-btn-label">GET IT ON</div><div class="app-btn-store">Google Play</div></div>
         </a>
         <a href="#" class="app-btn">
-          <svg width="20" height="24" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18.07 13.77C18.05 11.26 19.69 10.06 19.77 9.99C18.6 8.26 16.77 8.03 16.13 8.01C14.57 7.85 13.05 8.93 12.25 8.93C11.44 8.93 10.21 8.02 8.88 8.05C7.17 8.07 5.57 9.04 4.69 10.57C2.87 13.69 4.21 18.28 5.96 20.8C6.84 22.03 7.87 23.4 9.22 23.35C10.53 23.3 11.03 22.52 12.6 22.52C14.16 22.52 14.63 23.35 16 23.31C17.4 23.3 18.3 22.08 19.15 20.84C20.17 19.43 20.58 18.04 20.59 17.97C20.56 17.96 18.1 17.02 18.07 13.77Z" fill="white"/>
-            <path d="M15.08 6.05C15.8 5.15 16.28 3.91 16.14 2.67C15.08 2.71 13.75 3.39 12.99 4.27C12.32 5.05 11.74 6.33 11.9 7.54C13.08 7.63 14.33 6.95 15.08 6.05Z" fill="white"/>
-          </svg>
-          <div>
-            <div class="app-btn-label">DOWNLOAD ON THE</div>
-            <div class="app-btn-store">App Store</div>
-          </div>
+          <svg width="20" height="24" viewBox="0 0 22 26" fill="white"><path d="M18.07 13.77C18.05 11.26 19.69 10.06 19.77 9.99C18.6 8.26 16.77 8.03 16.13 8.01C14.57 7.85 13.05 8.93 12.25 8.93C11.44 8.93 10.21 8.02 8.88 8.05C7.17 8.07 5.57 9.04 4.69 10.57C2.87 13.69 4.21 18.28 5.96 20.8C6.84 22.03 7.87 23.4 9.22 23.35C10.53 23.3 11.03 22.52 12.6 22.52C14.16 22.52 14.63 23.35 16 23.31C17.4 23.3 18.3 22.08 19.15 20.84C20.17 19.43 20.58 18.04 20.59 17.97C20.56 17.96 18.1 17.02 18.07 13.77Z"/><path d="M15.08 6.05C15.8 5.15 16.28 3.91 16.14 2.67C15.08 2.71 13.75 3.39 12.99 4.27C12.32 5.05 11.74 6.33 11.9 7.54C13.08 7.63 14.33 6.95 15.08 6.05Z"/></svg>
+          <div><div class="app-btn-label">DOWNLOAD ON THE</div><div class="app-btn-store">App Store</div></div>
         </a>
       </div>
     </div>
-    <div class="download-phones">
-      <div class="mini-phone">
-        <div class="mini-phone-inner">
-          <div class="mini-phone-icon">💈</div>
-          <div class="mini-phone-text">Supreme Cuts<br>4.9★ · Lekki</div>
-        </div>
-      </div>
-      <div class="mini-phone tall">
-        <div class="mini-phone-inner">
-          <div class="mini-phone-icon">💄</div>
-          <div class="mini-phone-text">Bridal Makeup<br>₦35,000<br>Escrow ✓</div>
-        </div>
-      </div>
-      <div class="mini-phone">
-        <div class="mini-phone-inner">
-          <div class="mini-phone-icon">🪢</div>
-          <div class="mini-phone-text">Knotless Braids<br>Book Now</div>
-        </div>
+    <div class="download-right">
+      <img src="https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=600&q=80&fit=crop&crop=top" alt="Starkel App">
+      <div class="download-right-overlay"></div>
+      <div class="download-badge">
+        <div class="db-title">Booking Confirmed ✓</div>
+        <div class="db-row"><div class="db-dot" style="background:var(--green)"></div><div class="db-text">Escrow locked — ₦35,000</div></div>
+        <div class="db-row"><div class="db-dot" style="background:var(--accent)"></div><div class="db-text">Provider: Glow by Chisom</div></div>
+        <div class="db-row"><div class="db-dot" style="background:var(--amber)"></div><div class="db-text">Today · 3:00 PM · Ikoyi</div></div>
       </div>
     </div>
   </div>
@@ -1404,76 +935,117 @@
     <div>
       <div class="footer-col-title">Services</div>
       <ul class="footer-links">
-        <li><a href="#">Haircut & Styling</a></li>
-        <li><a href="#">Barbing</a></li>
-        <li><a href="#">Braids & Locs</a></li>
-        <li><a href="#">Makeup</a></li>
-        <li><a href="#">Nails & Gel</a></li>
-        <li><a href="#">All Services</a></li>
+        <li><a href="#services">Haircut & Styling</a></li><li><a href="#services">Barbing</a></li>
+        <li><a href="#services">Braids & Locs</a></li><li><a href="#services">Makeup</a></li>
+        <li><a href="#services">Nails & Gel</a></li><li><a href="#services">All Services</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Company</div>
       <ul class="footer-links">
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">How It Works</a></li>
-        <li><a href="#">For Providers</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
+        <li><a href="#home">About Us</a></li><li><a href="#how">How It Works</a></li>
+        <li><a href="#providers">For Providers</a></li><li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li><li><a href="#">Press</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Support</div>
       <ul class="footer-links">
-        <li><a href="#">Help Center</a></li>
-        <li><a href="#">Safety</a></li>
-        <li><a href="#">Dispute Policy</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Help Center</a></li><li><a href="#trust">Safety</a></li>
+        <li><a href="#trust">Dispute Policy</a></li><li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li><li><a href="#">Contact Us</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Starkel Technologies Ltd · Lagos, Nigeria</div>
-    <div class="footer-badge">
-      <div class="footer-badge-dot"></div>
-      All systems operational
-    </div>
+    <div class="footer-copy">© 2025 Starkel Technologies Ltd · Lagos, Nigeria 🇳🇬</div>
+    <div class="footer-badge"><div class="footer-badge-dot"></div>All systems operational</div>
   </div>
 </footer>
 
 <script>
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing)}
+animateRing();
+document.querySelectorAll('a,button,.service-card,.how-cell,.testimonial-card,.trust-feature,.g-cell').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('hovered');ring.classList.add('hovered')});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('hovered');ring.classList.remove('hovered')});
+});
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
 
-  function animateRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateRing);
+// Reveal
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Counters
+function animateCount(el){
+  const target=parseInt(el.dataset.target);
+  const suffix=el.dataset.suffix||'';
+  const dur=1800;const start=performance.now();
+  function upd(now){
+    const p=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    const val=Math.round(ease*target);
+    el.textContent=val>=1000?(val/1000).toFixed(0)+'K'+suffix:val+suffix;
+    if(p<1)requestAnimationFrame(upd);
   }
-  animateRing();
+  requestAnimationFrame(upd);
+}
+const cobs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting&&e.target.dataset.target){animateCount(e.target);cobs.unobserve(e.target)}}),{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cobs.observe(el));
 
-  document.querySelectorAll('a, button, .service-card, .how-cell, .testimonial-card, .trust-feature').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.classList.add('hovered'); ring.classList.add('hovered'); });
-    el.addEventListener('mouseleave', () => { cursor.classList.remove('hovered'); ring.classList.remove('hovered'); });
-  });
+// Search
+const PROVIDERS=[
+  {name:'Supreme Cuts',cat:'Barbing',area:'Lekki Phase 1',dist:'0.8km',price:'₦3,500',av:'SC',col:'#4CAF82',bg:'rgba(76,175,130,.15)'},
+  {name:'Zara Beauty Studio',cat:'Braids & Locs',area:'Victoria Island',dist:'1.4km',price:'₦8,000',av:'ZB',col:'#D4547A',bg:'rgba(212,84,122,.15)'},
+  {name:'Glow by Chisom',cat:'Makeup',area:'Ikoyi',dist:'2.1km',price:'₦12,000',av:'GC',col:'#7B4FA6',bg:'rgba(123,79,166,.15)'},
+  {name:'Kings Barbers',cat:'Barbing',area:'Ikeja',dist:'3.2km',price:'₦4,000',av:'KB',col:'#3B82F6',bg:'rgba(59,130,246,.15)'},
+  {name:'Nail Republic',cat:'Nails & Gel',area:'Surulere',dist:'4.1km',price:'₦6,500',av:'NR',col:'#A855F7',bg:'rgba(168,85,247,.15)'},
+  {name:'Glam Studio Lagos',cat:'Makeup',area:'Lekki Phase 2',dist:'2.8km',price:'₦18,000',av:'GS',col:'#D4974A',bg:'rgba(212,151,74,.15)'},
+  {name:'BeautyBar VI',cat:'Facials & Skin',area:'Victoria Island',dist:'1.8km',price:'₦9,500',av:'BB',col:'#14B8A6',bg:'rgba(20,184,166,.15)'},
+  {name:'FadeMasters',cat:'Haircut & Styling',area:'Yaba',dist:'5.0km',price:'₦5,000',av:'FM',col:'#22C55E',bg:'rgba(34,197,94,.15)'},
+  {name:'Lash Lounge',cat:'Lashes & Brows',area:'Gbagada',dist:'6.2km',price:'₦7,000',av:'LL',col:'#E8A0C8',bg:'rgba(232,160,200,.2)'},
+  {name:'SpaZen Lagos',cat:'Massage & Spa',area:'Lekki Phase 1',dist:'1.1km',price:'₦22,000',av:'SZ',col:'#7B4FA6',bg:'rgba(123,79,166,.15)'},
+];
+const hsInput=document.getElementById('hsInput');
+const hsLoc=document.getElementById('hsLoc');
+const drop=document.getElementById('searchDrop');
 
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+function renderDrop(res){
+  if(!res.length){drop.innerHTML='<div style="padding:20px;text-align:center;color:#9080A8;font-size:14px">No providers found — try a different service or area.</div>';drop.classList.add('open');return}
+  drop.innerHTML=res.map((p,i)=>`
+    <a class="sd-item" href="#">
+      <div class="sd-av" style="background:${p.bg};color:${p.col}">${p.av}</div>
+      <div><div class="sd-name">${p.name}</div><div class="sd-sub">${p.cat} · ${p.area} · ${p.dist} · ✓ CAC</div></div>
+      <div class="sd-price">${p.price}</div>
+    </a>${i<res.length-1?'<div class="sd-sep"></div>':''}
+  `).join('')+'<div class="sd-foot">Showing '+res.length+' providers — <a href="#">see all results →</a></div>';
+  drop.classList.add('open');
+}
+
+function filterP(){
+  const q=hsInput.value.toLowerCase().trim();
+  const loc=hsLoc.value.toLowerCase();
+  if(!q&&!loc){drop.classList.remove('open');return}
+  renderDrop(PROVIDERS.filter(p=>(!q||p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q))&&(!loc||p.area.toLowerCase().includes(loc.split(' ')[0]))));
+}
+
+function doSearch(){
+  filterP();
+  if(!drop.classList.contains('open')&&!hsInput.value)renderDrop(PROVIDERS);
+}
+
+hsInput.addEventListener('input',filterP);
+hsLoc.addEventListener('change',filterP);
+hsInput.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+document.addEventListener('click',e=>{if(!e.target.closest('#heroSearch')&&!e.target.closest('#searchDrop'))drop.classList.remove('open')});
 </script>
 </body>
 </html>
